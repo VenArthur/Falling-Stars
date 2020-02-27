@@ -6,6 +6,8 @@
 #include <SDL_ttf.h>
 #include "Texture.h"
 
+//Test
+
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
 
