@@ -10,19 +10,22 @@ const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
 
 //Window to be rendered to
-SDL_Window *g_Window = NULL;
+SDL_Window* g_Window = NULL;
 
 //The surface contained by the window
-SDL_Surface *g_ScreenSurface = NULL;
+SDL_Surface* g_ScreenSurface = NULL;
 
 //Window Renderer
-SDL_Renderer *g_Renderer = NULL;
+SDL_Renderer* g_Renderer = NULL;
+
+//Textures
+Texture g_BackgroundTexture;
 
 //Initialize SDL and create the window
 bool init();
 
 //Image to load 
-SDL_Surface *loadSurface(std::string path);
+SDL_Surface* loadSurface(std::string path);
 
 //Load media
 bool loadMedia();
@@ -31,7 +34,7 @@ bool loadMedia();
 void close();
 
 
-int main(int argc, char *args[])
+int main(int argc, char* args[])
 {
 	//Main loop flag
 	bool quit = false;
@@ -69,6 +72,7 @@ int main(int argc, char *args[])
 				SDL_SetRenderDrawColor(g_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(g_Renderer);
 
+				g_BackgroundTexture.render(g_Renderer, 0, 0);
 
 				//Update screen
 				SDL_RenderPresent(g_Renderer);
@@ -178,12 +182,22 @@ bool loadMedia()
 	//Loading success flag
 	bool loadMediaSuccess = true;
 
+	//Load background texture
+	if (!g_BackgroundTexture.loadFromFile(g_Renderer, "Space Background.png"))
+	{
+		printf("\nFailed to load pride texture image! \n");
+		loadMediaSuccess = false;
+	}
+
 	return loadMediaSuccess;
 }
 
 
 void close()
 {
+	//Free textures
+	g_BackgroundTexture.free();
+
 	//Destroy window
 	SDL_DestroyRenderer(g_Renderer);
 	SDL_DestroyWindow(g_Window);
