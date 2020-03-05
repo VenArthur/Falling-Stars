@@ -21,6 +21,8 @@ SDL_Renderer* g_Renderer = NULL;
 //Textures
 Texture g_BackgroundTexture;
 
+Texture g_StarsTexture;
+
 //Initialize SDL and create the window
 bool init();
 
@@ -73,6 +75,7 @@ int main(int argc, char* args[])
 				SDL_RenderClear(g_Renderer);
 
 				g_BackgroundTexture.render(g_Renderer, 0, 0);
+				g_StarsTexture.render(g_Renderer, 200, 200);
 
 				//Update screen
 				SDL_RenderPresent(g_Renderer);
@@ -189,6 +192,13 @@ bool loadMedia()
 		loadMediaSuccess = false;
 	}
 
+	//Load background texture
+	if (!g_StarsTexture.loadFromFile(g_Renderer, "Stars.png"))
+	{
+		printf("\nFailed to load pride texture image! \n");
+		loadMediaSuccess = false;
+	}
+
 	return loadMediaSuccess;
 }
 
@@ -197,6 +207,7 @@ void close()
 {
 	//Free textures
 	g_BackgroundTexture.free();
+	g_StarsTexture.free();
 
 	//Destroy window
 	SDL_DestroyRenderer(g_Renderer);
