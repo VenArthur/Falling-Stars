@@ -1,11 +1,15 @@
+#include <ctime>
 #include <iostream>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include "Texture.h"
+#include "Stars.h"
 
+//Window dimensions 
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
 
@@ -20,8 +24,10 @@ SDL_Renderer* g_Renderer = NULL;
 
 //Textures
 Texture g_BackgroundTexture;
-
 Texture g_StarsTexture;
+
+//Stars
+Stars star(50, -50);
 
 //Initialize SDL and create the window
 bool init();
@@ -70,12 +76,16 @@ int main(int argc, char* args[])
 					}
 				}
 
+				star.move();
+
 				//Clear Screen
 				SDL_SetRenderDrawColor(g_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(g_Renderer);
 
 				g_BackgroundTexture.render(g_Renderer, 0, 0);
-				g_StarsTexture.render(g_Renderer, 200, 200);
+				star.render(g_Renderer, g_StarsTexture);
+
+				//g_StarsTexture.render(g_Renderer, 200, 200); Stars can be placed outside screen with negative values
 
 				//Update screen
 				SDL_RenderPresent(g_Renderer);
