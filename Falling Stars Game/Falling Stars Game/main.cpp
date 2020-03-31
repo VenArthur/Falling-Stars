@@ -1,5 +1,6 @@
 #include <ctime>
 #include <iostream>
+#include <random>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -27,7 +28,16 @@ Texture g_BackgroundTexture;
 Texture g_StarsTexture;
 
 //Stars
-Stars star(50, -50);
+//Random Starting Position for the X-coordinate
+std::random_device dev;
+std::mt19937 rng(dev());
+std::uniform_int_distribution<std::mt19937::result_type> randomPosX(50, SCREEN_WIDTH - 100);
+
+//Random Star Speed
+std::uniform_int_distribution<std::mt19937::result_type> randomSpeed(20, 100);
+float starSpeed = 1.0 / randomSpeed(rng);
+
+Stars star(randomPosX(rng), -50, starSpeed);
 
 //Initialize SDL and create the window
 bool init();

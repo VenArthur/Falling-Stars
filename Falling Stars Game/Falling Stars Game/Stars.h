@@ -1,6 +1,8 @@
 #pragma once
 #include <cmath>
+#include <random>
 #include <SDL.h>
+#include <time.h>
 #include "Texture.h"
 
 struct Circle
@@ -16,11 +18,8 @@ public:
 	static const int STAR_WIDTH = 50;
 	static const int STAR_HEIGHT = 50;
 
-	//Star Speed
-	const float STAR_VEL = 0.01;
-
 	//Initializes the variables
-	Stars(float x, float y);
+	Stars(float x, float y, float speed);
 
 	//Moves the stars
 	void move();
@@ -41,6 +40,9 @@ public:
 private:
 	//X and Y offsets
 	float m_PosX, m_PosY;
+
+	//Star speed
+	float m_StarSpeed;
 
 	//The velocity of the stars (only need Y velocity since the stars only move down)
 	float m_VelY;

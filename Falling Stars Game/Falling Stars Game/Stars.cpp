@@ -1,10 +1,13 @@
 #include "Stars.h"
 
-Stars::Stars(float x, float y)
+Stars::Stars(float x, float y, float speed)
 {
 	//Initialize the offsets
 	m_PosX = x;
 	m_PosY = y;
+
+	//Initialize Speed
+	m_StarSpeed = speed;
 
 	/* When collision is a box
 	//Set collision box dimensions
@@ -24,7 +27,7 @@ Stars::Stars(float x, float y)
 void Stars::move() //Circle& collisionCircle as a parameter when implementing catching the stars
 {
 	//Move the dot up or down 
-	m_VelY += STAR_VEL; //This is first because otherwise the stars will instantly move - will use properly for a starting button of the game
+	m_VelY += m_StarSpeed; //This is first because otherwise the stars will instantly move - will use properly for a starting button of the game
 	m_PosY += m_VelY;
 	
 	shiftColliders();
