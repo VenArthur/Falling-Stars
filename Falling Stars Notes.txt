@@ -1,0 +1,7 @@
+Falling Stars Notes:
+
+Fix speed of stars
+
+Need a way to make sure all stars don't fall at once 
+
+Once the star has gone off screen or has been caught remove it from vector
