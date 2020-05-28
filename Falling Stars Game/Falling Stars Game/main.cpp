@@ -35,7 +35,6 @@ std::uniform_int_distribution<std::mt19937::result_type> randomPosX(50, SCREEN_W
 
 //Random Star Speed
 std::uniform_int_distribution<std::mt19937::result_type> randomSpeed(20, 100);
-float starSpeed = 1.0 / randomSpeed(rng);
 
 //Stars star(randomPosX(rng), -50, starSpeed);
 
@@ -64,7 +63,7 @@ int main(int argc, char* args[])
 	std::vector<Stars*> stars;
 	for (int i = 0; i < 10; i++)
 	{
-		stars.push_back(new Stars(randomPosX(rng), -50, starSpeed));
+		stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomSpeed(rng)));
 	}
 
 	//Initialize
@@ -94,13 +93,8 @@ int main(int argc, char* args[])
 				}
 
 				//star.move();
-
 				for (int m = 0; m < stars.size(); m++)
 				{
-					/*Stars* ptr = stars[m];
-
-					ptr->move();*/
-
 					stars[m]->move();
 				}
 
@@ -108,14 +102,14 @@ int main(int argc, char* args[])
 				SDL_SetRenderDrawColor(g_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(g_Renderer);
 
+				//Render background
 				g_BackgroundTexture.render(g_Renderer, 0, 0);
+
 				//star.render(g_Renderer, g_StarsTexture);
 				for (int r = 0; r < stars.size(); r++)
 				{
 					stars[r]->render(g_Renderer, g_StarsTexture);
 				}
-
-				//g_StarsTexture.render(g_Renderer, 200, 200); Stars can be placed outside screen with negative values
 
 				//Update screen
 				SDL_RenderPresent(g_Renderer);
