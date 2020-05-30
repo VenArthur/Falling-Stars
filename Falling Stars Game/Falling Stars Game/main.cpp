@@ -66,6 +66,11 @@ int main(int argc, char* args[])
 		stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomSpeed(rng)));
 	}
 
+	//Stars that are currently on screen
+	int starsFalling = 1;
+	//When to add the next star
+	float counter = 0;
+
 	//Initialize
 	if (!init())
 	{
@@ -92,8 +97,13 @@ int main(int argc, char* args[])
 					}
 				}
 
+				if (starsFalling > stars.size())
+				{
+					starsFalling = stars.size();
+				}
+
 				//star.move();
-				for (int m = 0; m < stars.size(); m++)
+				for (int m = 0; m < starsFalling; m++)
 				{
 					stars[m]->move();
 				}
@@ -106,13 +116,25 @@ int main(int argc, char* args[])
 				g_BackgroundTexture.render(g_Renderer, 0, 0);
 
 				//star.render(g_Renderer, g_StarsTexture);
-				for (int r = 0; r < stars.size(); r++)
+				for (int r = 0; r < starsFalling; r++)
 				{
 					stars[r]->render(g_Renderer, g_StarsTexture);
 				}
 
 				//Update screen
 				SDL_RenderPresent(g_Renderer);
+
+
+				counter += 0.005;
+
+				//A new star is ready to appear, set counter back to 0. Also add another star to the vector
+				if (counter >= 1)
+				{
+					starsFalling += 1;
+					counter = 0;
+
+					stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomSpeed(rng)));
+				}
 			}
 		}
 	}
