@@ -10,7 +10,6 @@ The stars are falling from the sky! It's up to you to catch and save them
 5. Create Score System
 6. Create Health System
 7. Create Menu
-8. Levels?
-9. Leaderboard?
+8. Leaderboard?
 
 
