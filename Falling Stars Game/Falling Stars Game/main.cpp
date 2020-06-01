@@ -1,3 +1,4 @@
+#include <cmath>
 #include <ctime>
 #include <iostream>
 #include <random>
@@ -97,6 +98,7 @@ int main(int argc, char* args[])
 					}
 				}
 
+				//The max amount of stars falling is the amount in the vector
 				if (starsFalling > stars.size())
 				{
 					starsFalling = stars.size();
