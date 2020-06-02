@@ -1,7 +1,10 @@
 Falling Stars Notes:
 
-Fix speed of stars
+Create Player Class
 
-Need a way to make sure all stars don't fall at once 
+Player will need 6 images, 2 for running left, 2 for running right, and 2 for standing still 
+(one looking left, and one looking right)
 
-Once the star has gone off screen or has been caught remove it from vector
+Implement collision with stars
+
+Create astroids
