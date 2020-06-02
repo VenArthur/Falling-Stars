@@ -136,6 +136,14 @@ int main(int argc, char* args[])
 					counter = 0;
 
 					stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomSpeed(rng)));
+
+					//The size of the vector will never be greater than 20 to avoid an overflow
+					if (stars.size() % 21 == 0)
+					{
+						stars.erase(stars.begin() + 0);
+					}
+
+					//std::cout << stars.size() << std::endl;
 				}
 			}
 		}
