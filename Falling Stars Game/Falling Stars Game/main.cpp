@@ -127,7 +127,7 @@ int main(int argc, char* args[])
 				SDL_RenderPresent(g_Renderer);
 
 
-				counter += 0.005;
+				counter += 0.01;
 
 				//A new star is ready to appear, set counter back to 0. Also add another star to the vector
 				if (counter >= 1)

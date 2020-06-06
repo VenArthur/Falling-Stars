@@ -19,3 +19,9 @@ texture.
 Implement collision with stars
 
 Create astroids
+
+Find out why at between 15 and 40 seconds of run time, the stars drop a bunch. Is it the 
+erase function?
+Try instead of incrementing through the vector, decrement and pop_back the end instead of 
+using the erase function. DO NOT GET RID OF THE CURRENT SYSTEM, JUST COMMENT IT OUT. It works,
+but I want to see if I can fix the issue above with the stars dropping a bunch
