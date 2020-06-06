@@ -104,7 +104,7 @@ int main(int argc, char* args[])
 					starsFalling = stars.size();
 				}
 
-				//star.move();
+				//The stars are moving
 				for (int m = 0; m < starsFalling; m++)
 				{
 					stars[m]->move();
@@ -117,7 +117,7 @@ int main(int argc, char* args[])
 				//Render background
 				g_BackgroundTexture.render(g_Renderer, 0, 0);
 
-				//star.render(g_Renderer, g_StarsTexture);
+				//Rendering the stars that are moving
 				for (int r = 0; r < starsFalling; r++)
 				{
 					stars[r]->render(g_Renderer, g_StarsTexture);

@@ -2,8 +2,19 @@ Falling Stars Notes:
 
 Create Player Class
 
+Y-axis can be const because the player will only move on the X-axis
+
+Need render function
+
+Need handle event function
+
+Score should be handled by the player class
+
 Player will need 6 images, 2 for running left, 2 for running right, and 2 for standing still 
 (one looking left, and one looking right)
+
+Will need to make textures for all 6 images, and 1 extra Texture for rendering the current 
+texture.
 
 Implement collision with stars
 

@@ -26,12 +26,10 @@ Stars::Stars(float x, float y, float speed)
 
 void Stars::move() //Circle& collisionCircle as a parameter when implementing catching the stars
 {
-	//Move the dot up or down 
 	m_VelY += m_StarSpeed; //This is first because otherwise the stars will instantly move - will use properly for a starting button of the game
 	m_PosY += m_VelY;
 	
 	shiftColliders();
-
 }
 
 void Stars::render(SDL_Renderer* renderer, Texture& starsTexture)
