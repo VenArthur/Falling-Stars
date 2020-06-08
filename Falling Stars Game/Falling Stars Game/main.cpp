@@ -147,7 +147,7 @@ int main(int argc, char* args[])
 						starsFalling = 6;
 					}
 
-					std::cout << starsFalling << std::endl;
+					//std::cout << starsFalling << std::endl;
 				}
 			}
 		}
