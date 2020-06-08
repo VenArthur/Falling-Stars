@@ -9,6 +9,7 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include "Texture.h"
+#include "Player.h"
 #include "Stars.h"
 
 //Window dimensions 
@@ -27,6 +28,7 @@ SDL_Renderer* g_Renderer = NULL;
 //Textures
 Texture g_BackgroundTexture;
 Texture g_StarsTexture;
+Texture g_PlayerTexture;
 
 //Stars
 //Random Starting Position for the X-coordinate
@@ -59,6 +61,9 @@ int main(int argc, char* args[])
 
 	//Event handler
 	SDL_Event evnt;
+
+	//Create the player
+	Player player;
 
 	//Create stars
 	std::vector<Stars*> stars;
@@ -117,6 +122,8 @@ int main(int argc, char* args[])
 				{
 					stars[r]->render(g_Renderer, g_StarsTexture);
 				}
+
+				player.render(g_Renderer, g_PlayerTexture);
 
 				//Update screen
 				SDL_RenderPresent(g_Renderer);
@@ -251,14 +258,21 @@ bool loadMedia()
 	//Load background texture
 	if (!g_BackgroundTexture.loadFromFile(g_Renderer, "Space Background.png"))
 	{
-		printf("\nFailed to load pride texture image! \n");
+		printf("\nFailed to load background texture image! \n");
 		loadMediaSuccess = false;
 	}
 
-	//Load background texture
+	//Load star texture
 	if (!g_StarsTexture.loadFromFile(g_Renderer, "Stars.png"))
 	{
-		printf("\nFailed to load pride texture image! \n");
+		printf("\nFailed to load star texture image! \n");
+		loadMediaSuccess = false;
+	}
+
+	//Load player texture
+	if (!g_PlayerTexture.loadFromFile(g_Renderer, "PlayerStandingLeft.png"))
+	{
+		printf("\nFailed to load PlayerStandingLeft texture image! \n");
 		loadMediaSuccess = false;
 	}
 

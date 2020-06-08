@@ -35,8 +35,8 @@ bool Texture::loadFromFile(SDL_Renderer* renderer, std::string path)
 	else
 	{
 		//Color key image
-		//0, 0xFF, 0xFF is the color cyan. Cyan is being used for image backgrounds for texture transparency
-		SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
+		//0, 0xFF, 0xFF is the color magenta. Magenta is being used for image backgrounds for texture transparency
+		SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0xFF, 0, 0xFF));
 
 		//Create texture from surface pixels
 		newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
