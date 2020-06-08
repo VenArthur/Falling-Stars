@@ -67,7 +67,7 @@ int main(int argc, char* args[])
 		stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomSpeed(rng)));
 	}
 
-	//Stars that are currently on screen
+	//Max amount of stars that are currently falling 
 	int starsFalling = 1;
 	//When to add the next star
 	float counter = 0;
@@ -98,12 +98,7 @@ int main(int argc, char* args[])
 					}
 				}
 
-				//The max amount of stars falling is the amount in the vector
-				if (starsFalling > stars.size())
-				{
-					starsFalling = stars.size();
-				}
-
+			
 				//The stars are moving
 				for (int m = 0; m < starsFalling; m++)
 				{
@@ -127,7 +122,7 @@ int main(int argc, char* args[])
 				SDL_RenderPresent(g_Renderer);
 
 
-				counter += 0.01;
+				counter += 0.015;
 
 				//A new star is ready to appear, set counter back to 0. Also add another star to the vector
 				if (counter >= 1)
@@ -140,10 +135,12 @@ int main(int argc, char* args[])
 					//The size of the vector will never be greater than 20 to avoid an overflow
 					if (stars.size() % 21 == 0)
 					{
-						stars.erase(stars.begin() + 0);
+						//Erase the stars no longer on the screen
+						stars.erase(stars.begin() + 0, stars.begin() + 6);
+						starsFalling = 6;
 					}
 
-					//std::cout << stars.size() << std::endl;
+					std::cout << starsFalling << std::endl;
 				}
 			}
 		}
