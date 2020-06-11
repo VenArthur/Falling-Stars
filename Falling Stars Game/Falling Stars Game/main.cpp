@@ -270,7 +270,7 @@ bool loadMedia()
 	}
 
 	//Load player texture
-	if (!g_PlayerTexture.loadFromFile(g_Renderer, "PlayerStandingLeft.png"))
+	if (!g_PlayerTexture.loadFromFile(g_Renderer, "PlayerRunningLeft2.png"))
 	{
 		printf("\nFailed to load PlayerStandingLeft texture image! \n");
 		loadMediaSuccess = false;
