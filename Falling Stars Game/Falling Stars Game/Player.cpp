@@ -15,7 +15,7 @@ void Player::render(SDL_Renderer* renderer, Texture& playerTexture)
 	playerTexture.render(renderer, m_PosX - m_Collider.r, m_PosY - m_Collider.r);
 }
 
-void Player::handleEvent(SDL_Event evnt)
+void Player::handleEvent(SDL_Event evnt, Texture playerEventTextures[])
 {
 
 }

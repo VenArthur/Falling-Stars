@@ -12,7 +12,7 @@ public:
 
 	Player();
 	void render(SDL_Renderer* renderer, Texture& playerTexture);
-	void handleEvent(SDL_Event evnt);
+	void handleEvent(SDL_Event evnt, Texture playerEventTextures[]);
 
 	//Position getters
 	int getPosX() { return floor(m_PosX); }
