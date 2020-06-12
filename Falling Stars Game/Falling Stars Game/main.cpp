@@ -25,23 +25,16 @@ SDL_Surface* g_ScreenSurface = NULL;
 //Window Renderer
 SDL_Renderer* g_Renderer = NULL;
 
-//Player Movement Textures
-enum PlayerEventTextures
-{
-	StandingLeft,
-	StandingRight,
-	RunningLeft1,
-	RunningLeft2,
-	RunningRight1,
-	RunningRight2,
-	TextureTotal
-};
-
 //Textures
 Texture g_BackgroundTexture;
 Texture g_StarsTexture;
 Texture g_PlayerTexture; //This is the current player texture
-Texture g_PlayerEventTextures[TextureTotal];
+Texture g_PlayerStandingLeft;
+Texture g_PlayerStandingRight;
+Texture g_PlayerRunningLeft1;
+Texture g_PlayerRunningLeft2;
+Texture g_PlayerRunningRight1;
+Texture g_PlayerRunningRight2;
 
 //Stars
 //Random Starting Position for the X-coordinate
@@ -77,6 +70,9 @@ int main(int argc, char* args[])
 
 	//Create the player
 	Player player;
+
+	//Starting texture
+	g_PlayerTexture = g_PlayerStandingLeft;
 
 	//Create stars
 	std::vector<Stars*> stars;
@@ -115,7 +111,8 @@ int main(int argc, char* args[])
 						quit = true;
 					}
 
-					player.handleEvent(evnt, &g_PlayerEventTextures[TextureTotal]);
+					player.handleEvent(evnt, g_PlayerTexture, g_PlayerStandingLeft, g_PlayerStandingRight, g_PlayerRunningLeft1, g_PlayerRunningLeft2,
+										g_PlayerRunningRight1, g_PlayerRunningRight2);
 				}
 
 			
@@ -285,42 +282,42 @@ bool loadMedia()
 	}
 
 	//Load player standing left texture
-	if (!g_PlayerEventTextures[StandingLeft].loadFromFile(g_Renderer, "PlayerStandingLeft.png"))
+	if (!g_PlayerStandingLeft.loadFromFile(g_Renderer, "PlayerStandingLeft.png"))
 	{
 		printf("\nFailed to load PlayerStandingLeft texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load player standing right texture
-	if (!g_PlayerEventTextures[StandingRight].loadFromFile(g_Renderer, "PlayerStandingRight.png"))
+	if (!g_PlayerStandingRight.loadFromFile(g_Renderer, "PlayerStandingRight.png"))
 	{
 		printf("\nFailed to load PlayerStandingRight texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load player running left 1 texture
-	if (!g_PlayerEventTextures[RunningLeft1].loadFromFile(g_Renderer, "PlayerRunningLeft1.png"))
+	if (!g_PlayerRunningLeft1.loadFromFile(g_Renderer, "PlayerRunningLeft1.png"))
 	{
 		printf("\nFailed to load PlayerRunningLeft1 texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load player running left 2 texture
-	if (!g_PlayerEventTextures[RunningLeft2].loadFromFile(g_Renderer, "PlayerRunningLeft2.png"))
+	if (!g_PlayerRunningLeft2.loadFromFile(g_Renderer, "PlayerRunningLeft2.png"))
 	{
 		printf("\nFailed to load PlayerRunningLeft2 texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load player running right 1 texture
-	if (!g_PlayerEventTextures[RunningRight1].loadFromFile(g_Renderer, "PlayerRunningRight1.png"))
+	if (!g_PlayerRunningRight1.loadFromFile(g_Renderer, "PlayerRunningRight1.png"))
 	{
 		printf("\nFailed to load PlayerRunningRight1 texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load player running right 2 texture
-	if (!g_PlayerEventTextures[RunningRight2].loadFromFile(g_Renderer, "PlayerRunningRight2.png"))
+	if (!g_PlayerRunningRight2.loadFromFile(g_Renderer, "PlayerRunningRight2.png"))
 	{
 		printf("\nFailed to load PlayerRunningRight2 texture image! \n");
 		loadMediaSuccess = false;
@@ -337,7 +334,12 @@ void close()
 	g_BackgroundTexture.free();
 	g_StarsTexture.free();
 	g_PlayerTexture.free();
-	g_PlayerEventTextures[TextureTotal].free();
+	g_PlayerStandingLeft.free();
+	g_PlayerStandingRight.free();
+	g_PlayerRunningLeft1.free();
+	g_PlayerRunningLeft2.free();
+	g_PlayerRunningRight1.free();
+	g_PlayerRunningRight2.free();
 
 	//Destroy window
 	SDL_DestroyRenderer(g_Renderer);

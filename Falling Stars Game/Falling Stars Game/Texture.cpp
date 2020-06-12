@@ -130,3 +130,8 @@ int Texture::getHeight()
 {
 	return m_Height;
 }
+
+bool operator== (const Texture& tex1, const Texture& tex2)
+{
+	return tex1 == tex2;
+}

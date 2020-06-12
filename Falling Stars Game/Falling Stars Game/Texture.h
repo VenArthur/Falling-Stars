@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <iostream>
 #include <string>
 class Texture
 {
@@ -27,6 +28,8 @@ public:
 	//Get image dimensions
 	int getWidth();
 	int getHeight();
+
+	friend bool operator== (const Texture &tex1, const Texture &tex2);
 
 private:
 	//The texture

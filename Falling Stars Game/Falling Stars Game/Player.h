@@ -12,7 +12,8 @@ public:
 
 	Player();
 	void render(SDL_Renderer* renderer, Texture& playerTexture);
-	void handleEvent(SDL_Event evnt, Texture playerEventTextures[]);
+	void handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standingLeft, Texture &standingRight, Texture &runningLeft1, Texture &runningLeft2,
+						Texture &runningRight1, Texture &runningRight2);
 
 	//Position getters
 	int getPosX() { return floor(m_PosX); }
@@ -29,6 +30,9 @@ private:
 	float m_PosX;
 	//Y offset - Y is const because the player only moves left and right
 	const float m_PosY = 600;
+
+	//Player speed
+	float m_PlayerSpeed = 5;
 
 	//The player's collision circle
 	Circle m_Collider;

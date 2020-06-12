@@ -15,8 +15,50 @@ void Player::render(SDL_Renderer* renderer, Texture& playerTexture)
 	playerTexture.render(renderer, m_PosX - m_Collider.r, m_PosY - m_Collider.r);
 }
 
-void Player::handleEvent(SDL_Event evnt, Texture playerEventTextures[])
+//Handles Player texture and movement
+void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standingLeft, Texture &standingRight, Texture &runningLeft1, Texture &runningLeft2,
+							Texture &runningRight1, Texture &runningRight2)
 {
+	if (evnt.type == SDL_KEYDOWN)
+	{
+		if (evnt.key.keysym.sym == SDLK_a || evnt.key.keysym.sym == SDLK_LEFT)
+		{
+			if (playerTexture == runningLeft1)
+			{
+				playerTexture = runningLeft2;
+			}
+			else
+			{
+				playerTexture = runningLeft1;
+			}
+
+			m_PosX -= m_PlayerSpeed;
+		}
+		else if (evnt.key.keysym.sym == SDLK_d || evnt.key.keysym.sym == SDLK_RIGHT)
+		{
+			if (playerTexture == runningRight1)
+			{
+				playerTexture == runningRight2;
+			}
+			else
+			{
+				playerTexture = runningRight1;
+			}
+
+			m_PosX += m_PlayerSpeed;
+		}
+	}
+	else if (evnt.type == SDL_KEYUP)
+	{
+		if (evnt.key.keysym.sym == SDLK_a || evnt.key.keysym.sym == SDLK_LEFT)
+		{
+			playerTexture = standingLeft;
+		}
+		else if (evnt.key.keysym.sym == SDLK_d || evnt.key.keysym.sym == SDLK_RIGHT)
+		{
+			playerTexture = standingRight;
+		}
+	}
 
 }
 
