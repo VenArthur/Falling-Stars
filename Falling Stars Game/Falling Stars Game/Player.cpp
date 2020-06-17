@@ -18,7 +18,6 @@ void Player::render(SDL_Renderer* renderer, Texture& playerTexture)
 //Handles Player texture and movement
 void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standingLeft, Texture &standingRight, Texture &runningLeft, Texture &runningRight)
 {
-
 	if (evnt.type == SDL_KEYDOWN)
 	{
 		if (evnt.key.keysym.sym == SDLK_a || evnt.key.keysym.sym == SDLK_LEFT)
@@ -48,13 +47,14 @@ void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standi
 			m_PosX += m_PlayerSpeed;
 		}
 	}
-	else if (evnt.type == SDL_KEYUP)
+	//This worked better than using SDL_KEYUP
+	else if (evnt.type != SDL_KEYDOWN)
 	{
-		if (evnt.key.keysym.sym == SDLK_a || evnt.key.keysym.sym == SDLK_LEFT)
+		if (playerTexture == runningLeft)
 		{
 			playerTexture = standingLeft;
 		}
-		else if (evnt.key.keysym.sym == SDLK_d || evnt.key.keysym.sym == SDLK_RIGHT)
+		else if (playerTexture == runningRight)
 		{
 			playerTexture = standingRight;
 		}

@@ -31,7 +31,7 @@ private:
 	const float m_PosY = 600;
 
 	//Player speed
-	float m_PlayerSpeed = 10;
+	float m_PlayerSpeed = 15;
 
 	//The player's collision circle
 	Circle m_Collider;
