@@ -69,9 +69,6 @@ int main(int argc, char* args[])
 	//Create the player
 	Player player;
 
-	//Starting texture
-	g_PlayerTexture = g_PlayerStandingLeft;
-
 	//Create stars
 	std::vector<Stars*> stars;
 	for (int i = 0; i < 10; i++)
@@ -98,6 +95,8 @@ int main(int argc, char* args[])
 		}
 		else
 		{
+			//Starting texture
+			g_PlayerTexture = g_PlayerStandingLeft;
 
 			//Main loop
 			while (!quit)
@@ -111,7 +110,6 @@ int main(int argc, char* args[])
 
 					player.handleEvent(evnt, g_PlayerTexture, g_PlayerStandingLeft, g_PlayerStandingRight, g_PlayerRunningLeft, g_PlayerRunningRight);
 				}
-
 			
 				//The stars are moving
 				for (int m = 0; m < starsFalling; m++)
@@ -131,6 +129,7 @@ int main(int argc, char* args[])
 				{
 					stars[r]->render(g_Renderer, g_StarsTexture);
 				}
+
 
 				player.render(g_Renderer, g_PlayerTexture);
 

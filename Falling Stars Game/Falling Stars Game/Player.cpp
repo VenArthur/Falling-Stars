@@ -15,7 +15,7 @@ void Player::render(SDL_Renderer* renderer, Texture& playerTexture)
 	playerTexture.render(renderer, m_PosX - m_Collider.r, m_PosY - m_Collider.r);
 }
 
-//Handles Player texture and movement
+//Handles Player textures and movement
 void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standingLeft, Texture &standingRight, Texture &runningLeft, Texture &runningRight)
 {
 	if (evnt.type == SDL_KEYDOWN)
@@ -47,7 +47,7 @@ void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standi
 			m_PosX += m_PlayerSpeed;
 		}
 	}
-	//This worked better than using SDL_KEYUP
+	//This worked better than using SDL_KEYUP, but isn't working with a and d
 	else if (evnt.type != SDL_KEYDOWN)
 	{
 		if (playerTexture == runningLeft)

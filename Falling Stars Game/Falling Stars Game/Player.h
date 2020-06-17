@@ -11,7 +11,9 @@ public:
 	static const int PLAYER_HEIGHT = 200;
 
 	Player();
+	//Render the player
 	void render(SDL_Renderer* renderer, Texture& playerTexture);
+	//Handles Player textures and movement
 	void handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standingLeft, Texture &standingRight, Texture &runningLeft1, Texture &runningRight);
 
 	//Position getters
