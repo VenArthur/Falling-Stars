@@ -1,27 +1,12 @@
 Falling Stars Notes:
 
-Create Player Class
+Fix Player animation - should be short delay between steps 
+(like if you were to tap the a <- d or -> buttons)
 
-Y-axis can be const because the player will only move on the X-axis
-
-Need render function
-
-Need handle event function
+Fix Player has a short delay before moving
 
 Score should be handled by the player class
-
-Player will need 6 images, 2 for running left, 2 for running right, and 2 for standing still 
-(one looking left, and one looking right)
-
-Will need to make textures for all 6 images, and 1 extra Texture for rendering the current 
-texture.
 
 Implement collision with stars
 
 Create astroids
-
-Find out why at between 15 and 40 seconds of run time, the stars drop a bunch. Is it the 
-erase function?
-Try instead of incrementing through the vector, decrement and pop_back the end instead of 
-using the erase function. DO NOT GET RID OF THE CURRENT SYSTEM, JUST COMMENT IT OUT. It works,
-but I want to see if I can fix the issue above with the stars dropping a bunch
