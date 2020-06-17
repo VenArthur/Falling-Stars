@@ -31,10 +31,8 @@ Texture g_StarsTexture;
 Texture g_PlayerTexture; //This is the current player texture
 Texture g_PlayerStandingLeft;
 Texture g_PlayerStandingRight;
-Texture g_PlayerRunningLeft1;
-Texture g_PlayerRunningLeft2;
-Texture g_PlayerRunningRight1;
-Texture g_PlayerRunningRight2;
+Texture g_PlayerRunningLeft;
+Texture g_PlayerRunningRight;
 
 //Stars
 //Random Starting Position for the X-coordinate
@@ -111,8 +109,7 @@ int main(int argc, char* args[])
 						quit = true;
 					}
 
-					player.handleEvent(evnt, g_PlayerTexture, g_PlayerStandingLeft, g_PlayerStandingRight, g_PlayerRunningLeft1, g_PlayerRunningLeft2,
-										g_PlayerRunningRight1, g_PlayerRunningRight2);
+					player.handleEvent(evnt, g_PlayerTexture, g_PlayerStandingLeft, g_PlayerStandingRight, g_PlayerRunningLeft, g_PlayerRunningRight);
 				}
 
 			
@@ -296,33 +293,18 @@ bool loadMedia()
 	}
 
 	//Load player running left 1 texture
-	if (!g_PlayerRunningLeft1.loadFromFile(g_Renderer, "PlayerRunningLeft1.png"))
+	if (!g_PlayerRunningLeft.loadFromFile(g_Renderer, "PlayerRunningLeft1.png"))
 	{
-		printf("\nFailed to load PlayerRunningLeft1 texture image! \n");
-		loadMediaSuccess = false;
-	}
-
-	//Load player running left 2 texture
-	if (!g_PlayerRunningLeft2.loadFromFile(g_Renderer, "PlayerRunningLeft2.png"))
-	{
-		printf("\nFailed to load PlayerRunningLeft2 texture image! \n");
+		printf("\nFailed to load PlayerRunningLeft texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load player running right 1 texture
-	if (!g_PlayerRunningRight1.loadFromFile(g_Renderer, "PlayerRunningRight1.png"))
+	if (!g_PlayerRunningRight.loadFromFile(g_Renderer, "PlayerRunningRight1.png"))
 	{
-		printf("\nFailed to load PlayerRunningRight1 texture image! \n");
+		printf("\nFailed to load PlayerRunningRight texture image! \n");
 		loadMediaSuccess = false;
 	}
-
-	//Load player running right 2 texture
-	if (!g_PlayerRunningRight2.loadFromFile(g_Renderer, "PlayerRunningRight2.png"))
-	{
-		printf("\nFailed to load PlayerRunningRight2 texture image! \n");
-		loadMediaSuccess = false;
-	}
-
 
 	return loadMediaSuccess;
 }
@@ -336,10 +318,8 @@ void close()
 	g_PlayerTexture.free();
 	g_PlayerStandingLeft.free();
 	g_PlayerStandingRight.free();
-	g_PlayerRunningLeft1.free();
-	g_PlayerRunningLeft2.free();
-	g_PlayerRunningRight1.free();
-	g_PlayerRunningRight2.free();
+	g_PlayerRunningLeft.free();
+	g_PlayerRunningRight.free();
 
 	//Destroy window
 	SDL_DestroyRenderer(g_Renderer);

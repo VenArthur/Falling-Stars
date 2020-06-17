@@ -16,33 +16,33 @@ void Player::render(SDL_Renderer* renderer, Texture& playerTexture)
 }
 
 //Handles Player texture and movement
-void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standingLeft, Texture &standingRight, Texture &runningLeft1, Texture &runningLeft2,
-							Texture &runningRight1, Texture &runningRight2)
+void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standingLeft, Texture &standingRight, Texture &runningLeft, Texture &runningRight)
 {
+
 	if (evnt.type == SDL_KEYDOWN)
 	{
 		if (evnt.key.keysym.sym == SDLK_a || evnt.key.keysym.sym == SDLK_LEFT)
 		{
-			if (playerTexture == runningLeft1)
+			if (playerTexture == runningLeft)
 			{
-				playerTexture = runningLeft2;
+				playerTexture = standingLeft;
 			}
 			else
 			{
-				playerTexture = runningLeft1;
+				playerTexture = runningLeft;
 			}
 
 			m_PosX -= m_PlayerSpeed;
 		}
 		else if (evnt.key.keysym.sym == SDLK_d || evnt.key.keysym.sym == SDLK_RIGHT)
 		{
-			if (playerTexture == runningRight1)
+			if (playerTexture == runningRight)
 			{
-				playerTexture == runningRight2;
+				playerTexture = standingRight;
 			}
 			else
 			{
-				playerTexture = runningRight1;
+				playerTexture = runningRight;
 			}
 
 			m_PosX += m_PlayerSpeed;
@@ -59,7 +59,6 @@ void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standi
 			playerTexture = standingRight;
 		}
 	}
-
 }
 
 Circle& Player::getCollider()
