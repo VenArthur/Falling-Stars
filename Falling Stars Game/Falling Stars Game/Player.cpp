@@ -21,7 +21,7 @@ void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standi
 	if (evnt.type == SDL_KEYDOWN)
 	{
 		if (evnt.key.keysym.sym == SDLK_a || evnt.key.keysym.sym == SDLK_LEFT)
-		{
+		{ 
 			if (playerTexture == runningLeft)
 			{
 				playerTexture = standingLeft;
@@ -47,8 +47,7 @@ void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standi
 			m_PosX += m_PlayerSpeed;
 		}
 	}
-	//This worked better than using SDL_KEYUP, but isn't working with a and d
-	else if (evnt.type != SDL_KEYDOWN)
+	else if (evnt.type == SDL_KEYUP)
 	{
 		if (playerTexture == runningLeft)
 		{
