@@ -9,12 +9,6 @@ Stars::Stars(float x, float y, float speed)
 	//Initialize Speed
 	m_StarSpeed = speed;
 
-	/* When collision is a box
-	//Set collision box dimensions
-	m_Collider.w = DOT_WIDTH;
-	m_Collider.h = DOT_HEIGHT;
-	*/
-
 	m_Collider.r = STAR_WIDTH / 2;
 
 	//Initialize the velocity
