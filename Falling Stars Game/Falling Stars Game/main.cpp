@@ -111,12 +111,6 @@ int main(int argc, char* args[])
 					player.handleEvent(evnt, g_PlayerTexture, g_PlayerStandingLeft, g_PlayerStandingRight, g_PlayerRunningLeft, g_PlayerRunningRight);
 				}
 			
-				//The stars are moving
-				for (int m = 0; m < starsFalling; m++)
-				{
-					stars[m]->move();
-				}
-
 				//Clear Screen
 				SDL_SetRenderDrawColor(g_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(g_Renderer);
@@ -127,10 +121,11 @@ int main(int argc, char* args[])
 				//Rendering the stars that are moving
 				for (int r = 0; r < starsFalling; r++)
 				{
+					stars[r]->move();
 					stars[r]->render(g_Renderer, g_StarsTexture);
 				}
 
-
+				//Render the player
 				player.render(g_Renderer, g_PlayerTexture);
 
 				//Update screen
