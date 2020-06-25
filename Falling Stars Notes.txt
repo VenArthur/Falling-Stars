@@ -8,5 +8,7 @@ Fix Player has a short delay before moving
 Score should be handled by the player class
 
 Implement collision with stars
+ Check collision in the star move function? Will need to pass in player.getCollider()
+	If there is collision, do not render flag is set
 
 Create astroids

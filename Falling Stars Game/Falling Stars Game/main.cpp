@@ -119,10 +119,11 @@ int main(int argc, char* args[])
 				g_BackgroundTexture.render(g_Renderer, 0, 0);
 
 				//Rendering the stars that are moving
-				for (int r = 0; r < starsFalling; r++)
+				for (int s = 0; s < starsFalling; s++)
 				{
-					stars[r]->move();
-					stars[r]->render(g_Renderer, g_StarsTexture);
+					stars[s]->move();
+					stars[s]->render(g_Renderer, g_StarsTexture);
+					
 				}
 
 				//Render the player

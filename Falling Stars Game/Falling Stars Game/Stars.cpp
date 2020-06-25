@@ -23,6 +23,8 @@ void Stars::move() //Circle& collisionCircle as a parameter when implementing ca
 	m_VelY += m_StarSpeed; //This is first because otherwise the stars will instantly move - will use properly for a starting button of the game
 	m_PosY += m_VelY;
 	
+	//Check collsion here
+
 	shiftColliders();
 }
 

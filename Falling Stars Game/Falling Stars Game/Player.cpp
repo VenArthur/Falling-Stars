@@ -68,7 +68,7 @@ Circle& Player::getCollider()
 void Player::shiftColliders()
 {
 	m_Collider.x = m_PosX;
-	//m_Collider.y = m_PosY;
+	m_Collider.y = m_PosY;
 }
 
 
