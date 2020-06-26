@@ -30,7 +30,7 @@ private:
 	//X offset
 	float m_PosX;
 	//Y offset - Y is const because the player only moves left and right
-	const float m_PosY = 600;
+	const float m_PosY = 460;
 
 	//Player speed
 	float m_PlayerSpeed = 15;
