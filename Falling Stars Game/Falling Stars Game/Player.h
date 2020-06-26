@@ -21,9 +21,9 @@ public:
 	int getPosY() { return floor(m_PosY); }
 
 	//Gets collision circle
-	Circle& getCollider();
+	Circle& getStarCollider();
 
-	//Moves the collision circle relative to the star's offset
+	//Moves the collision circle relative to the player's offset
 	void shiftColliders();
 
 private:
@@ -36,7 +36,10 @@ private:
 	float m_PlayerSpeed = 15;
 
 	//The player's collision circle
-	Circle m_Collider;
+	Circle m_StarCollider;
+
+	//For collision, whether or not the player is facing left or right
+	bool m_IsGoingLeft;
 
 	//Circle-Circle collision detector
 	bool checkCollision(Circle& a, Circle& b);

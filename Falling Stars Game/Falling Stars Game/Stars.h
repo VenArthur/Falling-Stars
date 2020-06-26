@@ -22,7 +22,7 @@ public:
 	Stars(float x, float y, float speed);
 
 	//Moves the stars
-	void move();
+	void move(Circle& playerCollider);
 
 	//Renders stars to the screen
 	void render(SDL_Renderer *renderer, Texture &starsTexture);
@@ -49,6 +49,9 @@ private:
 
 	//The velocity of the stars (only need Y velocity since the stars only move down)
 	float m_VelY;
+
+	//Do NOT render flag for the caught stars
+	bool m_DoNOTRender;
 
 	//The star's collision circle
 	Circle m_Collider;

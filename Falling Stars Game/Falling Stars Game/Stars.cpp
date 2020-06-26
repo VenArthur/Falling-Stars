@@ -14,24 +14,34 @@ Stars::Stars(float x, float y, float speed)
 	//Initialize the velocity
 	m_VelY = 0;
 
+	//Do NOT Render flag for collision is set to false
+	m_DoNOTRender = false;
+
 	//Move colliders relative to the circle
 	shiftColliders();
 }
 
-void Stars::move() //Circle& collisionCircle as a parameter when implementing catching the stars
+void Stars::move(Circle &playerCollider) //Circle& collisionCircle as a parameter when implementing catching the stars
 {
 	m_VelY += m_StarSpeed; //This is first because otherwise the stars will instantly move - will use properly for a starting button of the game
 	m_PosY += m_VelY;
-	
-	//Check collsion here
 
 	shiftColliders();
+
+	if (checkCollision(m_Collider, playerCollider))
+	{
+		//If collided do not render flag goes here
+		m_DoNOTRender = true;
+	}
 }
 
 void Stars::render(SDL_Renderer* renderer, Texture& starsTexture)
 {
 	//Show the texture
-	starsTexture.render(renderer, m_PosX - m_Collider.r, m_PosY - m_Collider.r);
+	if (!m_DoNOTRender)
+	{
+		starsTexture.render(renderer, m_PosX - m_Collider.r, m_PosY - m_Collider.r);
+	}
 }
 
 Circle& Stars::getCollider()

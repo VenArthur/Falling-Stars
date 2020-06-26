@@ -4,7 +4,9 @@ Player::Player()
 {
 	m_PosX = 640;
 
-	m_Collider.r = PLAYER_WIDTH / 2;
+	m_StarCollider.x = m_PosX;
+	m_StarCollider.y = PLAYER_HEIGHT / 2;
+	m_StarCollider.r = PLAYER_WIDTH / 2;
 
 	shiftColliders();
 }
@@ -12,7 +14,7 @@ Player::Player()
 void Player::render(SDL_Renderer* renderer, Texture& playerTexture)
 {
 	//Show the texture
-	playerTexture.render(renderer, m_PosX - m_Collider.r, m_PosY - m_Collider.r);
+	playerTexture.render(renderer, m_PosX - m_StarCollider.r, m_PosY - m_StarCollider.r);
 }
 
 //Handles Player textures and movement
@@ -22,6 +24,8 @@ void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standi
 	{
 		if (evnt.key.keysym.sym == SDLK_a || evnt.key.keysym.sym == SDLK_LEFT)
 		{ 
+			m_IsGoingLeft = true;
+
 			if (playerTexture == runningLeft)
 			{
 				playerTexture = standingLeft;
@@ -32,9 +36,12 @@ void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standi
 			}
 
 			m_PosX -= m_PlayerSpeed;
+			shiftColliders();
 		}
 		else if (evnt.key.keysym.sym == SDLK_d || evnt.key.keysym.sym == SDLK_RIGHT)
 		{
+			m_IsGoingLeft = false;
+
 			if (playerTexture == runningRight)
 			{
 				playerTexture = standingRight;
@@ -45,6 +52,7 @@ void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standi
 			}
 
 			m_PosX += m_PlayerSpeed;
+			shiftColliders();
 		}
 	}
 	else if (evnt.type == SDL_KEYUP)
@@ -60,15 +68,23 @@ void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standi
 	}
 }
 
-Circle& Player::getCollider()
+Circle& Player::getStarCollider()
 {
-	return m_Collider;
+	return m_StarCollider;
 }
 
 void Player::shiftColliders()
 {
-	m_Collider.x = m_PosX;
-	m_Collider.y = m_PosY;
+	if (m_IsGoingLeft)
+	{
+		m_StarCollider.x = m_PosX;
+		m_StarCollider.y = PLAYER_HEIGHT / 2;
+	}
+	else
+	{
+		m_StarCollider.x = m_PosX + (PLAYER_WIDTH - 50);
+		m_StarCollider.y = PLAYER_HEIGHT / 2;
+	}
 }
 
 

@@ -121,7 +121,7 @@ int main(int argc, char* args[])
 				//Rendering the stars that are moving
 				for (int s = 0; s < starsFalling; s++)
 				{
-					stars[s]->move();
+					stars[s]->move(player.getStarCollider());
 					stars[s]->render(g_Renderer, g_StarsTexture);
 					
 				}
