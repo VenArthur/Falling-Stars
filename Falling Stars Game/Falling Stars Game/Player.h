@@ -40,11 +40,5 @@ private:
 
 	//For collision, whether or not the player is facing left or right
 	bool m_IsGoingLeft;
-
-	//Circle-Circle collision detector
-	bool checkCollision(Circle& a, Circle& b);
-
-	//Calculates distanced squared between 2 points
-	double distanceSquared(int x1, int y1, int x2, int y2);
 };
 
