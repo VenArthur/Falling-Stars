@@ -33,7 +33,13 @@ void Stars::move(Circle &playerCollider, int& playerScore) //Circle& collisionCi
 		//If collided do not render flag goes here
 		m_DoNOTRender = true;
 
-		//Need to implement score somehow
+		//If the star hasn't registered that the player scored yet, but there is collision, 
+		//the score goes up by one and the star registers that the player scored
+		if (scored == false)
+		{
+			playerScore += 1;
+			scored = true;
+		}
 	}
 }
 

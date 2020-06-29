@@ -55,6 +55,8 @@ private:
 	//Do NOT render flag for the caught stars
 	bool m_DoNOTRender;
 
+	bool scored = false;
+
 	//The star's collision circle
 	Circle m_Collider;
 

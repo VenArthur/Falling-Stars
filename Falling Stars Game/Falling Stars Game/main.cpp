@@ -34,9 +34,12 @@ Texture g_PlayerStandingLeft;
 Texture g_PlayerStandingRight;
 Texture g_PlayerRunningLeft;
 Texture g_PlayerRunningRight;
+Texture g_ScoreTextTexture;
 
-//Stars
-//Random Starting Position for the X-coordinate
+//Font
+TTF_Font* g_Font = NULL;
+
+//Stars Random Starting Position for the X-coordinate
 std::random_device dev;
 std::mt19937 rng(dev());
 std::uniform_int_distribution<std::mt19937::result_type> randomPosX(50, SCREEN_WIDTH - 100);
@@ -44,7 +47,6 @@ std::uniform_int_distribution<std::mt19937::result_type> randomPosX(50, SCREEN_W
 //Random Star Speed
 std::uniform_int_distribution<std::mt19937::result_type> randomSpeed(20, 100);
 
-//Stars star(randomPosX(rng), -50, starSpeed);
 
 //Initialize SDL and create the window
 bool init();
@@ -132,8 +134,18 @@ int main(int argc, char* args[])
 					stars[s]->render(g_Renderer, g_StarsTexture);
 				}
 
-				//Load score texture here and render here 
-				std::cout << player.score << std::endl; 
+				//Load score texture
+				playerScoreText.str("");
+				playerScoreText << player.score;
+
+				if (!g_ScoreTextTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, playerScoreText.str().c_str()))
+				{
+					printf("\nUnable to load score text texture!\n");
+				}
+
+				//Render score texture
+				g_ScoreTextTexture.render(g_Renderer, 25, 20);
+				
 
 				//Render the player
 				player.render(g_Renderer, g_PlayerTexture);
@@ -310,6 +322,13 @@ bool loadMedia()
 		loadMediaSuccess = false;
 	}
 
+	//Open the font
+	g_Font = TTF_OpenFont("OpenSans-Semibold.ttf", 22);
+	if (g_Font == NULL)
+	{
+		printf("\nFailed to load the score font (g_Font)! SDL_ttf Error: %s\n", TTF_GetError());
+	}
+
 	return loadMediaSuccess;
 }
 
@@ -324,6 +343,11 @@ void close()
 	g_PlayerStandingRight.free();
 	g_PlayerRunningLeft.free();
 	g_PlayerRunningRight.free();
+	g_ScoreTextTexture.free();
+
+	//Close the font
+	TTF_CloseFont(g_Font);
+	g_Font = NULL;
 
 	//Destroy window
 	SDL_DestroyRenderer(g_Renderer);
