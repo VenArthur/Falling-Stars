@@ -22,7 +22,7 @@ public:
 	Stars(float x, float y, float speed);
 
 	//Moves the stars
-	void move(Circle& playerCollider);
+	void move(Circle& playerCollider, int &playerScore);
 
 	//Renders stars to the screen
 	void render(SDL_Renderer *renderer, Texture &starsTexture);
@@ -39,6 +39,8 @@ public:
 
 	//Circle-Circle collision detector
 	bool checkCollision(Circle& a, Circle& b);
+
+	
 
 private:
 	//X and Y offsets

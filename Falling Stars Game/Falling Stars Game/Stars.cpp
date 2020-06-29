@@ -21,7 +21,7 @@ Stars::Stars(float x, float y, float speed)
 	shiftColliders();
 }
 
-void Stars::move(Circle &playerCollider) //Circle& collisionCircle as a parameter when implementing catching the stars
+void Stars::move(Circle &playerCollider, int& playerScore) //Circle& collisionCircle as a parameter when implementing catching the stars
 {
 	m_VelY += m_StarSpeed; //This is first because otherwise the stars will instantly move - will use properly for a starting button of the game
 	m_PosY += m_VelY;
@@ -32,6 +32,8 @@ void Stars::move(Circle &playerCollider) //Circle& collisionCircle as a paramete
 	{
 		//If collided do not render flag goes here
 		m_DoNOTRender = true;
+
+		//Need to implement score somehow
 	}
 }
 

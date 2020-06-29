@@ -26,6 +26,8 @@ public:
 	//Moves the collision circle relative to the player's offset
 	void shiftColliders();
 
+	int score;
+
 private:
 	//X offset
 	float m_PosX;
@@ -40,5 +42,6 @@ private:
 
 	//For collision, whether or not the player is facing left or right
 	bool m_IsGoingLeft;
+	
 };
 

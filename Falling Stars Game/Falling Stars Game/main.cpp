@@ -2,6 +2,7 @@
 #include <ctime>
 #include <iostream>
 #include <random>
+#include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -69,6 +70,12 @@ int main(int argc, char* args[])
 	//Create the player
 	Player player;
 
+	//Text in memory for player score
+	std::stringstream playerScoreText;
+
+	//Color for player score
+	SDL_Color textColor{ 255, 255, 255, 255 };
+
 	//Create stars
 	std::vector<Stars*> stars;
 	for (int i = 0; i < 10; i++)
@@ -121,10 +128,12 @@ int main(int argc, char* args[])
 				//Rendering the stars that are moving
 				for (int s = 0; s < starsFalling; s++)
 				{
-					stars[s]->move(player.getStarCollider());
+					stars[s]->move(player.getStarCollider(), player.score);
 					stars[s]->render(g_Renderer, g_StarsTexture);
-					
 				}
+
+				//Load score texture here and render here 
+				std::cout << player.score << std::endl; 
 
 				//Render the player
 				player.render(g_Renderer, g_PlayerTexture);

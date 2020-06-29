@@ -6,7 +6,9 @@ Player::Player()
 
 	m_StarCollider.x = m_PosX;
 	m_StarCollider.y = m_PosY + (PLAYER_HEIGHT / 2);
-	m_StarCollider.r = 20; 
+	m_StarCollider.r = 20;
+
+	score = 0;
 
 	shiftColliders();
 }
