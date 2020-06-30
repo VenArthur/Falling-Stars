@@ -323,7 +323,7 @@ bool loadMedia()
 	}
 
 	//Open the font
-	g_Font = TTF_OpenFont("OpenSans-Semibold.ttf", 22);
+	g_Font = TTF_OpenFont("Orbitron-SemiBold.ttf", 22);
 	if (g_Font == NULL)
 	{
 		printf("\nFailed to load the score font (g_Font)! SDL_ttf Error: %s\n", TTF_GetError());
