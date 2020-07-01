@@ -2,6 +2,7 @@
 #include <cmath>
 #include <random>
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <time.h>
 #include "Texture.h"
 
@@ -22,7 +23,7 @@ public:
 	Stars(float x, float y, float speed);
 
 	//Moves the stars
-	void move(Circle& playerCollider, int &playerScore);
+	void move(Circle& playerCollider, Mix_Chunk *soundEffect, int &playerScore);
 
 	//Renders stars to the screen
 	void render(SDL_Renderer *renderer, Texture &starsTexture);

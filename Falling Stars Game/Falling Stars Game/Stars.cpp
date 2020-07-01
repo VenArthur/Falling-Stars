@@ -21,7 +21,7 @@ Stars::Stars(float x, float y, float speed)
 	shiftColliders();
 }
 
-void Stars::move(Circle &playerCollider, int& playerScore) //Circle& collisionCircle as a parameter when implementing catching the stars
+void Stars::move(Circle &playerCollider, Mix_Chunk *soundEffect, int& playerScore)
 {
 	m_VelY += m_StarSpeed; //This is first because otherwise the stars will instantly move - will use properly for a starting button of the game
 	m_PosY += m_VelY;
@@ -34,10 +34,11 @@ void Stars::move(Circle &playerCollider, int& playerScore) //Circle& collisionCi
 		m_DoNOTRender = true;
 
 		//If the star hasn't registered that the player scored yet, but there is collision, 
-		//the score goes up by one and the star registers that the player scored
+		//the score goes up by one, a sound plays, and the star registers that the player scored
 		if (scored == false)
 		{
 			playerScore += 1;
+			Mix_PlayChannel(-1, soundEffect, 0);
 			scored = true;
 		}
 	}

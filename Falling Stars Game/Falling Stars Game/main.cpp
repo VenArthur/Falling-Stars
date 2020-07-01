@@ -8,6 +8,7 @@
 #include <string>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <SDL_ttf.h>
 #include "Texture.h"
 #include "Player.h"
@@ -38,6 +39,9 @@ Texture g_ScoreTextTexture;
 
 //Font
 TTF_Font* g_Font = NULL;
+
+//Sound Effects
+Mix_Chunk* g_StarSoundEffect = NULL;
 
 //Stars Random Starting Position for the X-coordinate
 std::random_device dev;
@@ -130,7 +134,7 @@ int main(int argc, char* args[])
 				//Rendering the stars that are moving
 				for (int s = 0; s < starsFalling; s++)
 				{
-					stars[s]->move(player.getStarCollider(), player.score);
+					stars[s]->move(player.getStarCollider(), g_StarSoundEffect, player.score);
 					stars[s]->render(g_Renderer, g_StarsTexture);
 				}
 
@@ -237,6 +241,13 @@ bool init()
 					printf("\nSDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 					initSuccess = false;
 				}
+
+				//Initialize SDL_mixer
+				if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+				{
+					printf("\nSDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+					initSuccess = false;
+				}
 			}
 		}
 	}
@@ -327,6 +338,15 @@ bool loadMedia()
 	if (g_Font == NULL)
 	{
 		printf("\nFailed to load the score font (g_Font)! SDL_ttf Error: %s\n", TTF_GetError());
+		loadMediaSuccess = false;
+	}
+
+	//Load star sound effect
+	g_StarSoundEffect = Mix_LoadWAV("StarSoundEffect.wav");
+	if (g_StarSoundEffect == NULL)
+	{
+		printf("\nFailed to load star sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+		loadMediaSuccess = false;
 	}
 
 	return loadMediaSuccess;
@@ -348,6 +368,9 @@ void close()
 	//Close the font
 	TTF_CloseFont(g_Font);
 	g_Font = NULL;
+
+	//Free Sound Effects
+	Mix_FreeChunk(g_StarSoundEffect);
 
 	//Destroy window
 	SDL_DestroyRenderer(g_Renderer);
