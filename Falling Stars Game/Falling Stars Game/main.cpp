@@ -52,6 +52,15 @@ std::uniform_int_distribution<std::mt19937::result_type> randomPosX(50, SCREEN_W
 std::uniform_int_distribution<std::mt19937::result_type> randomSpeed(20, 100);
 
 
+//Meteor Starting Position for the X-coordinate
+//A meteor can start at only 1 of 2 possible positions. The top left corner or the top right corner
+int GetMeteorStartX(int const a = 0, int const b = SCREEN_WIDTH)
+{
+	std::uniform_int_distribution<std::mt19937::result_type> meteorPoint(1, 2);
+	return (meteorPoint(rng) == 1) ? a : b;
+}
+
+
 //Initialize SDL and create the window
 bool init();
 
