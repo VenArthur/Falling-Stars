@@ -131,11 +131,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Meteors.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Stars.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Meteors.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Stars.h" />
     <ClInclude Include="Texture.h" />

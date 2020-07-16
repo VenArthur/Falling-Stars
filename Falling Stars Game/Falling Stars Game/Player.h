@@ -23,6 +23,9 @@ public:
 	//Gets collision circle
 	Circle& getStarCollider();
 
+	//Gets collision rectangle
+	SDL_Rect& getMeteorCollider();
+
 	//Moves the collision circle relative to the player's offset
 	void shiftColliders();
 
@@ -39,6 +42,9 @@ private:
 
 	//The player's collision circle
 	Circle m_StarCollider;
+
+	//The player's collision rectangle
+	SDL_Rect m_MeteorCollider;
 
 	//For collision, whether or not the player is facing left or right
 	bool m_IsGoingLeft;

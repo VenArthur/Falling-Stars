@@ -41,7 +41,8 @@ public:
 	//Circle-Circle collision detector
 	bool checkCollision(Circle& a, Circle& b);
 
-	
+	//Calculates distanced squared between 2 points
+	double distanceSquared(int x1, int y1, int x2, int y2);
 
 private:
 	//X and Y offsets
@@ -60,8 +61,5 @@ private:
 
 	//The star's collision circle
 	Circle m_Collider;
-
-	//Calculates distanced squared between 2 points
-	double distanceSquared(int x1, int y1, int x2, int y2);
 };
 

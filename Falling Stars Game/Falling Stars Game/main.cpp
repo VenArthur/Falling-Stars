@@ -13,6 +13,7 @@
 #include "Texture.h"
 #include "Player.h"
 #include "Stars.h"
+#include "Meteors.h"
 
 //Window dimensions 
 const int SCREEN_WIDTH = 1280;
@@ -49,7 +50,8 @@ std::mt19937 rng(dev());
 std::uniform_int_distribution<std::mt19937::result_type> randomPosX(50, SCREEN_WIDTH - 100);
 
 //Random Star Speed
-std::uniform_int_distribution<std::mt19937::result_type> randomSpeed(20, 100);
+std::uniform_int_distribution<std::mt19937::result_type> randomStarSpeed(20, 100);
+
 
 
 //Meteor Starting Position for the X-coordinate
@@ -59,6 +61,9 @@ int GetMeteorStartX(int const a = 0, int const b = SCREEN_WIDTH)
 	std::uniform_int_distribution<std::mt19937::result_type> meteorPoint(1, 2);
 	return (meteorPoint(rng) == 1) ? a : b;
 }
+
+//Random Meteor Speed
+std::uniform_int_distribution<std::mt19937::result_type> randomMeteorSpeed(50, 200);
 
 
 //Initialize SDL and create the window
@@ -95,13 +100,15 @@ int main(int argc, char* args[])
 	std::vector<Stars*> stars;
 	for (int i = 0; i < 10; i++)
 	{
-		stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomSpeed(rng)));
+		stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomStarSpeed(rng)));
 	}
+
+	//Create Meteors
 
 	//Max amount of stars that are currently falling 
 	int starsFalling = 1;
 	//When to add the next star
-	float counter = 0;
+	float starCounter = 0;
 
 	//Initialize
 	if (!init())
@@ -167,15 +174,15 @@ int main(int argc, char* args[])
 				SDL_RenderPresent(g_Renderer);
 
 
-				counter += 0.015;
+				starCounter += 0.015;
 
 				//A new star is ready to appear, set counter back to 0. Also add another star to the vector
-				if (counter >= 1)
+				if (starCounter >= 1)
 				{
 					starsFalling += 1;
-					counter = 0;
+					starCounter = 0;
 
-					stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomSpeed(rng)));
+					stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomStarSpeed(rng)));
 
 					//The size of the vector will never be greater than 20 to avoid an overflow
 					if (stars.size() % 21 == 0)
