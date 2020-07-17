@@ -29,7 +29,11 @@ public:
 	//Moves the collision circle relative to the player's offset
 	void shiftColliders();
 
+	//Player Score
 	int score;
+
+	//Player Health
+	int hearts;
 
 private:
 	//X offset

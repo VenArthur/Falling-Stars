@@ -104,6 +104,11 @@ int main(int argc, char* args[])
 	}
 
 	//Create Meteors
+	std::vector<Meteors*> meteors;
+	for (int i = 0; i < 5; i++)
+	{
+		meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
+	}
 
 	//Max amount of stars that are currently falling 
 	int starsFalling = 1;

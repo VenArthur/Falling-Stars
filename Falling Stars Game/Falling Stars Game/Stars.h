@@ -1,9 +1,9 @@
 #pragma once
 #include <cmath>
-#include <random>
+//#include <random>
 #include <SDL.h>
 #include <SDL_mixer.h>
-#include <time.h>
+//#include <time.h>
 #include "Texture.h"
 
 struct Circle
@@ -11,6 +11,14 @@ struct Circle
 	int x, y;
 	int r;
 };
+
+double distanceSquared(int x1, int y1, int x2, int y2)
+{
+	int deltaX = x2 - x1;
+	int deltaY = y2 - y1;
+
+	return deltaX * deltaX + deltaY * deltaY;
+}
 
 class Stars
 {
@@ -40,9 +48,6 @@ public:
 
 	//Circle-Circle collision detector
 	bool checkCollision(Circle& a, Circle& b);
-
-	//Calculates distanced squared between 2 points
-	double distanceSquared(int x1, int y1, int x2, int y2);
 
 private:
 	//X and Y offsets

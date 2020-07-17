@@ -1,9 +1,7 @@
 #pragma once
 #include <cmath>
-#include <random>
 #include <SDL.h>
 #include <SDL_mixer.h>
-#include <time.h>
 #include "Texture.h"
 #include "Stars.h"
 
@@ -18,13 +16,13 @@ public:
 	Meteors(float x, float y, float speed);
 
 	//Moves the meteors
-	void move(SDL_Rect& playerCollider, Mix_Chunk* soundEffect);
+	void move(SDL_Rect& playerCollider, Mix_Chunk* soundEffect, int& playerHearts);
 
 	//Renders stars to the screen
 	void render(SDL_Renderer* renderer, Texture& meteorTexture);
 
 	//Gets collision circle
-	Circle& getCollider();
+	Circle& getCollider() {return m_Collider;}
 
 	//Position getters
 	int getPosX() { return floor(m_PosX); }
@@ -35,8 +33,6 @@ public:
 
 	//Circle-Box collision detector
 	bool checkCollision(Circle& a, SDL_Rect& b);
-
-	friend double Stars::distanceSquared(int x1, int y1, int x2, int y2);
 
 private:
 	//X and Y offsets
@@ -49,8 +45,14 @@ private:
 	float m_VelX;
 	float m_VelY;
 
+	//The meteor is starting in the right corner
+	bool m_InRightCorner;
+
 	//Do NOT render flag for meteors that hit the player
 	bool m_DoNOTRender;
+
+	//Whether the player has lost a heart yet due to collision
+	bool m_HeartDecrease = false;
 
 	//The meteor's collision circle
 	Circle m_Collider;
