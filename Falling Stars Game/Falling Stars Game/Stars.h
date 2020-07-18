@@ -12,13 +12,6 @@ struct Circle
 	int r;
 };
 
-double distanceSquared(int x1, int y1, int x2, int y2)
-{
-	int deltaX = x2 - x1;
-	int deltaY = y2 - y1;
-
-	return deltaX * deltaX + deltaY * deltaY;
-}
 
 class Stars
 {
@@ -48,6 +41,8 @@ public:
 
 	//Circle-Circle collision detector
 	bool checkCollision(Circle& a, Circle& b);
+
+	double distanceSquared(int x1, int y1, int x2, int y2);
 
 private:
 	//X and Y offsets

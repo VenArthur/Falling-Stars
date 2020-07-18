@@ -31,6 +31,7 @@ SDL_Renderer* g_Renderer = NULL;
 //Textures
 Texture g_BackgroundTexture;
 Texture g_StarsTexture;
+Texture g_MeteorsTexture;
 Texture g_PlayerTexture; //This is the current player texture
 Texture g_PlayerStandingLeft;
 Texture g_PlayerStandingRight;
@@ -63,7 +64,7 @@ int GetMeteorStartX(int const a = 0, int const b = SCREEN_WIDTH)
 }
 
 //Random Meteor Speed
-std::uniform_int_distribution<std::mt19937::result_type> randomMeteorSpeed(50, 200);
+std::uniform_int_distribution<std::mt19937::result_type> randomMeteorSpeed(20, 50);
 
 
 //Initialize SDL and create the window
@@ -103,17 +104,22 @@ int main(int argc, char* args[])
 		stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomStarSpeed(rng)));
 	}
 
-	//Create Meteors
-	std::vector<Meteors*> meteors;
-	for (int i = 0; i < 5; i++)
-	{
-		meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
-	}
-
 	//Max amount of stars that are currently falling 
 	int starsFalling = 1;
 	//When to add the next star
 	float starCounter = 0;
+
+	//Create Meteors
+	std::vector<Meteors*> meteors;
+	for (int i = 0; i < 10; i++)
+	{
+		meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
+	}
+
+	//Max amount of meteors that are currently falling
+	int meteorsFalling = 1;
+	//When to add the next star
+	float meteorCounter = 0;
 
 	//Initialize
 	if (!init())
@@ -159,6 +165,13 @@ int main(int argc, char* args[])
 					stars[s]->render(g_Renderer, g_StarsTexture);
 				}
 
+				//Rendering the meteors that are moving
+				for (int m = 0; m < meteorsFalling; m++)
+				{
+					meteors[m]->move(player.getMeteorCollider(), g_StarSoundEffect, player.hearts);
+					meteors[m]->render(g_Renderer, g_MeteorsTexture);
+				}
+
 				//Load score texture
 				playerScoreText.str("");
 				playerScoreText << player.score;
@@ -180,6 +193,7 @@ int main(int argc, char* args[])
 
 
 				starCounter += 0.015;
+				meteorCounter += 0.001;
 
 				//A new star is ready to appear, set counter back to 0. Also add another star to the vector
 				if (starCounter >= 1)
@@ -198,6 +212,22 @@ int main(int argc, char* args[])
 					}
 
 					//std::cout << starsFalling << std::endl;
+				}
+
+				//A new meteor is ready to appear, set counter back to 0
+				if (meteorCounter >= 1)
+				{
+					meteorsFalling += 1;
+					meteorCounter = 0;
+
+					//The size of the vector will never be greater than 20 to avoid an overflow
+					if (meteors.size() % 21 == 0)
+					{
+						//Erase the meteors no longer on the screen
+						meteors.erase(meteors.begin() + 0, meteors.begin() + 6);
+						meteorsFalling = 6;
+					}
+			
 				}
 			}
 		}
@@ -326,6 +356,13 @@ bool loadMedia()
 		loadMediaSuccess = false;
 	}
 
+	//Load meteor texture
+	if (!g_MeteorsTexture.loadFromFile(g_Renderer, "meteor.png"))
+	{
+		printf("\nFailed to load meteor texture image! \n");
+		loadMediaSuccess = false;
+	}
+
 	//Load player standing left texture
 	if (!g_PlayerStandingLeft.loadFromFile(g_Renderer, "PlayerStandingLeft.png"))
 	{
@@ -379,6 +416,7 @@ void close()
 	//Free textures
 	g_BackgroundTexture.free();
 	g_StarsTexture.free();
+	g_MeteorsTexture.free();
 	g_PlayerTexture.free();
 	g_PlayerStandingLeft.free();
 	g_PlayerStandingRight.free();

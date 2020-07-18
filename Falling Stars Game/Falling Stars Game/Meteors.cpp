@@ -119,3 +119,11 @@ bool Meteors::checkCollision(Circle& a, SDL_Rect& b)
 	//If the shapes have not collided
 	return false;
 }
+
+double Meteors::distanceSquared(int x1, int y1, int x2, int y2)
+{
+	int deltaX = x2 - x1;
+	int deltaY = y2 - y1;
+
+	return deltaX * deltaX + deltaY * deltaY;
+}

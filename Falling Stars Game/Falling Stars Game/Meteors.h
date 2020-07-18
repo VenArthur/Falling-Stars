@@ -34,6 +34,8 @@ public:
 	//Circle-Box collision detector
 	bool checkCollision(Circle& a, SDL_Rect& b);
 
+	double distanceSquared(int x1, int y1, int x2, int y2);
+
 private:
 	//X and Y offsets
 	float m_PosX, m_PosY;
