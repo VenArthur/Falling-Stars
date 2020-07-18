@@ -14,7 +14,6 @@ The stars are falling from the sky! It's up to you to catch and save them
 
 
 ### Artist Credit
-The art for the meteors is by <a href= "https://www.pixilart.com/art/game-meteor-b59e616e93c5aac">Anonymous on Pixilart.com</a>
 
 The stars' sound effect when being caught is a cut version of 
 
