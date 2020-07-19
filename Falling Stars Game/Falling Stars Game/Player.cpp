@@ -11,10 +11,10 @@ Player::Player()
 	m_StarCollider.r = 20;
 
 	//Initialize Meteor Collider
-	m_MeteorCollider.x = m_PosX + 60;
+	m_MeteorCollider.x = m_PosX + 70;
 	m_MeteorCollider.y = m_PosY + 10;
-	m_MeteorCollider.w = 100;
-	m_MeteorCollider.h = PLAYER_HEIGHT - 40;
+	m_MeteorCollider.w = 50;
+	m_MeteorCollider.h = PLAYER_HEIGHT - 50;
 
 	//Initialize score
 	score = 0;
@@ -96,7 +96,7 @@ void Player::shiftColliders()
 		m_StarCollider.x = m_PosX;
 		m_StarCollider.y = m_PosY + (PLAYER_HEIGHT / 2);
 
-		m_MeteorCollider.x = m_PosX + 60;
+		m_MeteorCollider.x = m_PosX + 70;
 		m_MeteorCollider.y = m_PosY + 10;
 		
 	}
@@ -105,7 +105,7 @@ void Player::shiftColliders()
 		m_StarCollider.x = m_PosX + (PLAYER_WIDTH - 50);
 		m_StarCollider.y = m_PosY + (PLAYER_HEIGHT / 2);
 
-		m_MeteorCollider.x = m_PosX;
+		m_MeteorCollider.x = m_PosX + 40;
 		m_MeteorCollider.y = m_PosY + 10;
 	}
 }

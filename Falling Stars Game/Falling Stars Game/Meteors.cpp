@@ -29,7 +29,7 @@ Meteors::Meteors(float x, float y, float speed)
 
 void Meteors::move(SDL_Rect& playerCollider, Mix_Chunk* soundEffect, int& playerHearts)
 {
-	m_VelX += m_MeteorSpeed / 2;
+	m_VelX += m_MeteorSpeed;
 	m_VelY += m_MeteorSpeed; //This is first because otherwise the meteors will instantly move - will use properly for a starting button of the game
 
 	if (m_InRightCorner == true)
