@@ -6,7 +6,7 @@ The stars are falling from the sky! It's up to you to catch and save them
 1. Create Window ✔
 2. Create Background ✔
 3. Create Player ✔
-4. Create Stars and Meteors
+4. Create Stars and Meteors (Asteroids) ✔
 5. Create Score System ✔
 6. Create Health System
 7. Create Menu
@@ -14,7 +14,8 @@ The stars are falling from the sky! It's up to you to catch and save them
 
 
 ### Artist Credit
-The art for the meteors is by <a href= "https://www.pixilart.com/art/game-meteor-b59e616e93c5aac">Anonymous on Pixilart.com</a>
+
+The art for the asteroids is by <a href= "https://www.pixilart.com/art/game-meteor-b59e616e93c5aac">Anonymous on Pixilart.com</a>
 
 The stars' sound effect when being caught is a cut version of 
 
