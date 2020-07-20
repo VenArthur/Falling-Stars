@@ -44,6 +44,7 @@ TTF_Font* g_Font = NULL;
 
 //Sound Effects
 Mix_Chunk* g_StarSoundEffect = NULL;
+Mix_Chunk* g_MeteorSoundEffect = NULL;
 
 //Stars Random Starting Position for the X-coordinate
 std::random_device dev;
@@ -168,7 +169,7 @@ int main(int argc, char* args[])
 				//Rendering the meteors that are moving
 				for (int m = 0; m < meteorsFalling; m++)
 				{
-					meteors[m]->move(player.getMeteorCollider(), g_StarSoundEffect, player.hearts);
+					meteors[m]->move(player.getMeteorCollider(), g_MeteorSoundEffect, player.hearts);
 					meteors[m]->render(g_Renderer, g_MeteorsTexture);
 				}
 
@@ -407,6 +408,13 @@ bool loadMedia()
 		loadMediaSuccess = false;
 	}
 
+	//Load meteor sound effect
+	g_MeteorSoundEffect = Mix_LoadWAV("MeteorSoundEffect.wav");
+	if (g_MeteorSoundEffect == NULL)
+	{
+		printf("\nFailed to load meteor sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+		loadMediaSuccess = false;
+	}
 	return loadMediaSuccess;
 }
 
@@ -430,6 +438,7 @@ void close()
 
 	//Free Sound Effects
 	Mix_FreeChunk(g_StarSoundEffect);
+	Mix_FreeChunk(g_MeteorSoundEffect);
 
 	//Destroy window
 	SDL_DestroyRenderer(g_Renderer);
