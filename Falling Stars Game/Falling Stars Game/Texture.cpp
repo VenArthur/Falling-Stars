@@ -112,13 +112,20 @@ void Texture::free()
 }
 
 
-void Texture::render(SDL_Renderer* renderer, int x, int y)
+void Texture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip)
 {
 	//Set rendering space 
 	SDL_Rect renderQuad = { x, y, m_Width, m_Height };
 
+	//Set clip rendering dimensions
+	if (clip != NULL)
+	{
+		renderQuad.w = clip->w;
+		renderQuad.h = clip->h;
+	}
+
 	//Render to screen
-	SDL_RenderCopy(renderer, m_Texture, NULL, &renderQuad);
+	SDL_RenderCopyEx(renderer, m_Texture, clip, &renderQuad, angle, center, flip);
 }
 
 int Texture::getWidth()

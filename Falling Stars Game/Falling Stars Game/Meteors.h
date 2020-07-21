@@ -47,6 +47,9 @@ private:
 	float m_VelX;
 	float m_VelY;
 
+	//The angle of the meteor
+	double m_degrees;
+
 	//The meteor is starting in the right corner
 	bool m_InRightCorner;
 

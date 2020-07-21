@@ -20,6 +20,9 @@ Meteors::Meteors(float x, float y, float speed)
 	m_VelX = 0;
 	m_VelY = 0;
 
+	//Initialize degrees
+	m_degrees = 0.0;
+
 	//Do NOT Render flag for collision is set to false
 	m_DoNOTRender = false;
 
@@ -36,11 +39,13 @@ void Meteors::move(SDL_Rect& playerCollider, Mix_Chunk* soundEffect, int& player
 	{
 		m_PosX -= m_VelX;
 		m_PosY += m_VelY;
+		m_degrees -= 5;
 	}
 	else
 	{
 		m_PosX += m_VelX;
 		m_PosY += m_VelY;
+		m_degrees += 5;
 	}
 
 	shiftColliders();
@@ -66,7 +71,7 @@ void Meteors::render(SDL_Renderer* renderer, Texture& meteorTexture)
 	//Show the texture
 	if (!m_DoNOTRender)
 	{
-		meteorTexture.render(renderer, m_PosX - m_Collider.r, m_PosY - m_Collider.r);
+		meteorTexture.render(renderer, m_PosX - m_Collider.r, m_PosY - m_Collider.r, NULL, m_degrees);
 	}
 }
 
