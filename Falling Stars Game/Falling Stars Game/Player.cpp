@@ -19,6 +19,9 @@ Player::Player()
 	//Initialize score
 	score = 0;
 
+	//Initialize hearts
+	hearts = 3;
+
 	shiftColliders();
 }
 

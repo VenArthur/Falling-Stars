@@ -38,6 +38,8 @@ Texture g_PlayerStandingRight;
 Texture g_PlayerRunningLeft;
 Texture g_PlayerRunningRight;
 Texture g_ScoreTextTexture;
+Texture g_GameOverTexture;
+Texture g_HeartTextures[4];
 
 //Font
 TTF_Font* g_Font = NULL;
@@ -86,6 +88,9 @@ int main(int argc, char* args[])
 	//Main loop flag
 	bool quit = false;
 
+	//Game over flag
+	bool gameOver = false;
+
 	//Event handler
 	SDL_Event evnt;
 
@@ -94,6 +99,9 @@ int main(int argc, char* args[])
 
 	//Text in memory for player score
 	std::stringstream playerScoreText;
+
+	//Text in memory for game over message
+	std::stringstream gameOverText;
 
 	//Color for player score
 	SDL_Color textColor{ 255, 255, 255, 255 };
@@ -157,18 +165,75 @@ int main(int argc, char* args[])
 				//Render background
 				g_BackgroundTexture.render(g_Renderer, 0, 0);
 
-				//Rendering the stars that are moving
-				for (int s = 0; s < starsFalling; s++)
+				if (gameOver == false)
 				{
-					stars[s]->move(player.getStarCollider(), g_StarSoundEffect, player.score);
-					stars[s]->render(g_Renderer, g_StarsTexture);
-				}
 
-				//Render the meteor that is moving
-				for (int m = 0; m < 1; m++)
-				{
-					meteors[m]->move(player.getMeteorCollider(), g_MeteorSoundEffect, player.hearts);
-					meteors[m]->render(g_Renderer, g_MeteorsTexture);
+					//Rendering the stars that are moving
+					for (int s = 0; s < starsFalling; s++)
+					{
+						stars[s]->move(player.getStarCollider(), g_StarSoundEffect, player.score);
+						stars[s]->render(g_Renderer, g_StarsTexture);
+					}
+
+					//Render the meteor that is moving
+					for (int m = 0; m < 1; m++)
+					{
+						meteors[m]->move(player.getMeteorCollider(), g_MeteorSoundEffect, player.hearts);
+						meteors[m]->render(g_Renderer, g_MeteorsTexture);
+					}
+
+
+					//Render the player
+					player.render(g_Renderer, g_PlayerTexture);
+
+					//If the player lost all hearts the game is over
+					if (player.hearts < 0)
+					{
+						gameOver = true;
+					}
+					else
+					{
+						//Render heart texture
+						g_HeartTextures[player.hearts].render(g_Renderer, SCREEN_WIDTH - 200, 20);
+
+						//Manage the stars and meteors
+						starCounter += 0.015;
+						meteorCounter += 0.001;
+
+						//A new star is ready to appear, set counter back to 0. Also add another star to the vector
+						if (starCounter >= 1)
+						{
+							starsFalling += 1;
+							starCounter = 0;
+
+							stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomStarSpeed(rng)));
+
+							//The size of the vector will never be greater than 20 to avoid an overflow
+							if (stars.size() % 21 == 0)
+							{
+								//Erase the stars no longer on the screen
+								stars.erase(stars.begin() + 0, stars.begin() + 6);
+								starsFalling = 6;
+							}
+
+						}
+
+						//A new meteor is ready to appear, set counter back to 0
+						if (meteorCounter >= 1)
+						{
+							meteorCounter = 0;
+
+							//If the meteor that was moving on screen is no longer on screen, a new meteor can be created and that one can be removed
+							if (meteors[0]->getPosY() > SCREEN_HEIGHT)
+							{
+								//Erase the meteors no longer on the screen
+								meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
+								meteors.erase(meteors.begin(), meteors.begin() + 1);
+
+							}
+
+						}
+					}
 				}
 
 				//Load score texture
@@ -182,51 +247,23 @@ int main(int argc, char* args[])
 
 				//Render score texture
 				g_ScoreTextTexture.render(g_Renderer, 25, 20);
-				
 
-				//Render the player
-				player.render(g_Renderer, g_PlayerTexture);
+				if (gameOver)
+				{
+					gameOverText.str("Game Over");
+
+					if (!g_GameOverTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, gameOverText.str().c_str()))
+					{
+						printf("\nUnable to load game over text texture!\n");
+					}
+
+					//Render game over texture
+					g_GameOverTexture.render(g_Renderer, 580 , SCREEN_HEIGHT / 3);
+				}
 
 				//Update screen
 				SDL_RenderPresent(g_Renderer);
 
-
-				starCounter += 0.015;
-				meteorCounter += 0.001;
-
-				//A new star is ready to appear, set counter back to 0. Also add another star to the vector
-				if (starCounter >= 1)
-				{
-					starsFalling += 1;
-					starCounter = 0;
-
-					stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomStarSpeed(rng)));
-
-					//The size of the vector will never be greater than 20 to avoid an overflow
-					if (stars.size() % 21 == 0)
-					{
-						//Erase the stars no longer on the screen
-						stars.erase(stars.begin() + 0, stars.begin() + 6);
-						starsFalling = 6;
-					}
-
-				}
-
-				//A new meteor is ready to appear, set counter back to 0
-				if (meteorCounter >= 1)
-				{
-					meteorCounter = 0;
-
-					//If the meteor that was moving on screen is no longer on screen, a new meteor can be created and that one can be removed
-					if (meteors[0]->getPosY() > SCREEN_HEIGHT)
-					{
-						//Erase the meteors no longer on the screen
-						meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
-						meteors.erase(meteors.begin(), meteors.begin() + 1);
-						
-					}
-			
-				}
 			}
 		}
 	}
@@ -389,6 +426,34 @@ bool loadMedia()
 		loadMediaSuccess = false;
 	}
 
+	//Load 4 hearts left texture
+	if (!g_HeartTextures[3].loadFromFile(g_Renderer, "4Hearts.png"))
+	{
+		printf("\nFailed to load 4Hearts texture image! \n");
+		loadMediaSuccess = false;
+	}
+
+	//Load 3 hearts left texture
+	if (!g_HeartTextures[2].loadFromFile(g_Renderer, "3Hearts.png"))
+	{
+		printf("\nFailed to load 3Hearts texture image! \n");
+		loadMediaSuccess = false;
+	}
+
+	//Load 2 hearts left texture
+	if (!g_HeartTextures[1].loadFromFile(g_Renderer, "2Hearts.png"))
+	{
+		printf("\nFailed to load 2Hearts texture image! \n");
+		loadMediaSuccess = false;
+	}
+
+	//Load 1 heart left texture
+	if (!g_HeartTextures[0].loadFromFile(g_Renderer, "1Heart.png"))
+	{
+		printf("\nFailed to load 1Heart texture image! \n");
+		loadMediaSuccess = false;
+	}
+
 	//Open the font
 	g_Font = TTF_OpenFont("Orbitron-SemiBold.ttf", 22);
 	if (g_Font == NULL)
@@ -428,6 +493,8 @@ void close()
 	g_PlayerRunningLeft.free();
 	g_PlayerRunningRight.free();
 	g_ScoreTextTexture.free();
+	g_GameOverTexture.free();
+	g_HeartTextures[4].free();
 
 	//Close the font
 	TTF_CloseFont(g_Font);
