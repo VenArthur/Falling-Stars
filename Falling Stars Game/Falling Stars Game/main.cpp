@@ -112,14 +112,12 @@ int main(int argc, char* args[])
 
 	//Create Meteors
 	std::vector<Meteors*> meteors;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
 	}
 
-	//Max amount of meteors that are currently falling
-	int meteorsFalling = 1;
-	//When to add the next star
+	//When to add the next meteor
 	float meteorCounter = 0;
 
 	//Initialize
@@ -166,8 +164,8 @@ int main(int argc, char* args[])
 					stars[s]->render(g_Renderer, g_StarsTexture);
 				}
 
-				//Rendering the meteors that are moving
-				for (int m = 0; m < meteorsFalling; m++)
+				//Render the meteor that is moving
+				for (int m = 0; m < 1; m++)
 				{
 					meteors[m]->move(player.getMeteorCollider(), g_MeteorSoundEffect, player.hearts);
 					meteors[m]->render(g_Renderer, g_MeteorsTexture);
@@ -212,21 +210,20 @@ int main(int argc, char* args[])
 						starsFalling = 6;
 					}
 
-					//std::cout << starsFalling << std::endl;
 				}
 
 				//A new meteor is ready to appear, set counter back to 0
 				if (meteorCounter >= 1)
 				{
-					meteorsFalling += 1;
 					meteorCounter = 0;
 
-					//The size of the vector will never be greater than 20 to avoid an overflow
-					if (meteors.size() % 21 == 0)
+					//If the meteor that was moving on screen is no longer on screen, a new meteor can be created and that one can be removed
+					if (meteors[0]->getPosY() > SCREEN_HEIGHT)
 					{
 						//Erase the meteors no longer on the screen
-						meteors.erase(meteors.begin() + 0, meteors.begin() + 6);
-						meteorsFalling = 6;
+						meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
+						meteors.erase(meteors.begin(), meteors.begin() + 1);
+						
 					}
 			
 				}

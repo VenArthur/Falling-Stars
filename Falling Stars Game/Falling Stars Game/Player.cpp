@@ -11,10 +11,10 @@ Player::Player()
 	m_StarCollider.r = 20;
 
 	//Initialize Meteor Collider
-	m_MeteorCollider.x = m_PosX + 70;
+	m_MeteorCollider.x = m_PosX + 80;
 	m_MeteorCollider.y = m_PosY + 10;
 	m_MeteorCollider.w = 50;
-	m_MeteorCollider.h = PLAYER_HEIGHT - 50;
+	m_MeteorCollider.h = PLAYER_HEIGHT - 70;
 
 	//Initialize score
 	score = 0;
@@ -26,6 +26,12 @@ void Player::render(SDL_Renderer* renderer, Texture& playerTexture)
 {
 	//Show the texture
 	playerTexture.render(renderer, m_PosX - m_StarCollider.r, m_PosY - m_StarCollider.r);
+
+	/*Testing dimensions for meteor collider
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+	SDL_RenderDrawRect(renderer, &m_MeteorCollider);
+	*/
+	
 }
 
 //Handles Player textures and movement
@@ -96,7 +102,7 @@ void Player::shiftColliders()
 		m_StarCollider.x = m_PosX;
 		m_StarCollider.y = m_PosY + (PLAYER_HEIGHT / 2);
 
-		m_MeteorCollider.x = m_PosX + 70;
+		m_MeteorCollider.x = m_PosX + 80;
 		m_MeteorCollider.y = m_PosY + 10;
 		
 	}
@@ -105,7 +111,7 @@ void Player::shiftColliders()
 		m_StarCollider.x = m_PosX + (PLAYER_WIDTH - 50);
 		m_StarCollider.y = m_PosY + (PLAYER_HEIGHT / 2);
 
-		m_MeteorCollider.x = m_PosX + 40;
+		m_MeteorCollider.x = m_PosX + 30;
 		m_MeteorCollider.y = m_PosY + 10;
 	}
 }

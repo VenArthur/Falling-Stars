@@ -50,8 +50,8 @@ void Meteors::move(SDL_Rect& playerCollider, Mix_Chunk* soundEffect, int& player
 		//If collided do not render flag goes here
 		m_DoNOTRender = true;
 
-		//If the star hasn't registered that the player scored yet, but there is collision, 
-		//the score goes up by one, a sound plays, and the star registers that the player scored
+		//If the meteor hasn't registered that the player got hit yet, but there is collision, 
+		//the number of hearts goes down by one, a sound plays, and the meteor registers that the player got hit
 		if (m_HeartDecrease == false)
 		{
 			playerHearts -= 1;
