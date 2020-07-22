@@ -1,21 +1,3 @@
 Falling Stars Notes:
-
-Create astroids
-
-Need to work on movement of the meteors with a counter and how the meteors appear
-
-Functions needed from stars (similar to)
-move
-render
-getCollider, meteor collider will be a circle
-shiftColliders
-checkCollision needs circle and rect parameters
-distanceSquared - could probably friend from Stars 
-getPosX
-getPosY
-
-Will need velocity for both X and Y, or one if they are the same value
-
-Will need a do not render flag 
-
-Meteors will handle the hearts, will need to implement 
+Need a start button with starting flag
+Need a restarting function or flag

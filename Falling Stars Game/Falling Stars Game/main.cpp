@@ -142,12 +142,14 @@ int main(int argc, char* args[])
 		}
 		else
 		{
+			
 			//Starting texture
 			g_PlayerTexture = g_PlayerStandingLeft;
 
 			//Main loop
 			while (!quit)
 			{
+				
 				while (SDL_PollEvent(&evnt) != 0)
 				{
 					if (evnt.type == SDL_QUIT)
@@ -165,7 +167,7 @@ int main(int argc, char* args[])
 				//Render background
 				g_BackgroundTexture.render(g_Renderer, 0, 0);
 
-				if (gameOver == false)
+				if (!gameOver)
 				{
 
 					//Rendering the stars that are moving
