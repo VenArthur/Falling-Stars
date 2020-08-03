@@ -88,9 +88,6 @@ int main(int argc, char* args[])
 	//Starting and restarting flag
 	bool starting = true;
 
-	//Playing the game loop flag
-	bool quit = false;
-
 	//Initialize
 	if (!init())
 	{
@@ -105,8 +102,15 @@ int main(int argc, char* args[])
 		}
 		else
 		{
+			//Game assets ready loop
 			while (starting) 
 			{
+				//Game window loop flag
+				bool quit = false;
+
+				//Playing flag
+				bool playing = false;
+
 				//Game over flag (flag used to determine what needs to be rendered)
 				bool gameOver = false;
 
@@ -150,7 +154,8 @@ int main(int argc, char* args[])
 				//Starting texture
 				g_PlayerTexture = g_PlayerStandingLeft;
 
-				//Main loop
+
+				//Game window loop
 				while (!quit)
 				{
 
@@ -162,6 +167,11 @@ int main(int argc, char* args[])
 							starting = false;
 						}
 
+						/*For play button, 
+						for starting if playing = false set it to true
+						for restarting if playing = true and gameOver = true, quit = true
+						*/
+
 						player.handleEvent(evnt, g_PlayerTexture, g_PlayerStandingLeft, g_PlayerStandingRight, g_PlayerRunningLeft, g_PlayerRunningRight);
 					}
 
@@ -172,6 +182,7 @@ int main(int argc, char* args[])
 					//Render background
 					g_BackgroundTexture.render(g_Renderer, 0, 0);
 
+					//if playing here
 					if (!gameOver)
 					{
 
