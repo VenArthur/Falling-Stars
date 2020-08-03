@@ -85,48 +85,11 @@ void close();
 
 int main(int argc, char* args[])
 {
-	//Main loop flag
+	//Starting and restarting flag
+	bool starting = true;
+
+	//Playing the game loop flag
 	bool quit = false;
-
-	//Game over flag
-	bool gameOver = false;
-
-	//Event handler
-	SDL_Event evnt;
-
-	//Create the player
-	Player player;
-
-	//Text in memory for player score
-	std::stringstream playerScoreText;
-
-	//Text in memory for game over message
-	std::stringstream gameOverText;
-
-	//Color for player score
-	SDL_Color textColor{ 255, 255, 255, 255 };
-
-	//Create stars
-	std::vector<Stars*> stars;
-	for (int i = 0; i < 10; i++)
-	{
-		stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomStarSpeed(rng)));
-	}
-
-	//Max amount of stars that are currently falling 
-	int starsFalling = 1;
-	//When to add the next star
-	float starCounter = 0;
-
-	//Create Meteors
-	std::vector<Meteors*> meteors;
-	for (int i = 0; i < 2; i++)
-	{
-		meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
-	}
-
-	//When to add the next meteor
-	float meteorCounter = 0;
 
 	//Initialize
 	if (!init())
@@ -142,130 +105,172 @@ int main(int argc, char* args[])
 		}
 		else
 		{
-			
-			//Starting texture
-			g_PlayerTexture = g_PlayerStandingLeft;
-
-			//Main loop
-			while (!quit)
+			while (starting) 
 			{
-				
-				while (SDL_PollEvent(&evnt) != 0)
-				{
-					if (evnt.type == SDL_QUIT)
-					{
-						quit = true;
-					}
+				//Game over flag (flag used to determine what needs to be rendered)
+				bool gameOver = false;
 
-					player.handleEvent(evnt, g_PlayerTexture, g_PlayerStandingLeft, g_PlayerStandingRight, g_PlayerRunningLeft, g_PlayerRunningRight);
+				//Event handler
+				SDL_Event evnt;
+
+				//Create the player
+				Player player;
+
+				//Text in memory for player score
+				std::stringstream playerScoreText;
+
+				//Text in memory for game over message
+				std::stringstream gameOverText;
+
+				//Color for player score
+				SDL_Color textColor{ 255, 255, 255, 255 };
+
+				//Create stars
+				std::vector<Stars*> stars;
+				for (int i = 0; i < 10; i++)
+				{
+					stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomStarSpeed(rng)));
 				}
-			
-				//Clear Screen
-				SDL_SetRenderDrawColor(g_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-				SDL_RenderClear(g_Renderer);
 
-				//Render background
-				g_BackgroundTexture.render(g_Renderer, 0, 0);
+				//Max amount of stars that are currently falling 
+				int starsFalling = 1;
+				//When to add the next star
+				float starCounter = 0;
 
-				if (!gameOver)
+				//Create Meteors
+				std::vector<Meteors*> meteors;
+				for (int i = 0; i < 2; i++)
+				{
+					meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
+				}
+
+				//When to add the next meteor
+				float meteorCounter = 0;
+
+				//Starting texture
+				g_PlayerTexture = g_PlayerStandingLeft;
+
+				//Main loop
+				while (!quit)
 				{
 
-					//Rendering the stars that are moving
-					for (int s = 0; s < starsFalling; s++)
+					while (SDL_PollEvent(&evnt) != 0)
 					{
-						stars[s]->move(player.getStarCollider(), g_StarSoundEffect, player.score);
-						stars[s]->render(g_Renderer, g_StarsTexture);
+						if (evnt.type == SDL_QUIT)
+						{
+							quit = true;
+							starting = false;
+						}
+
+						player.handleEvent(evnt, g_PlayerTexture, g_PlayerStandingLeft, g_PlayerStandingRight, g_PlayerRunningLeft, g_PlayerRunningRight);
 					}
 
-					//Render the meteor that is moving
-					for (int m = 0; m < 1; m++)
+					//Clear Screen
+					SDL_SetRenderDrawColor(g_Renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+					SDL_RenderClear(g_Renderer);
+
+					//Render background
+					g_BackgroundTexture.render(g_Renderer, 0, 0);
+
+					if (!gameOver)
 					{
-						meteors[m]->move(player.getMeteorCollider(), g_MeteorSoundEffect, player.hearts);
-						meteors[m]->render(g_Renderer, g_MeteorsTexture);
-					}
+
+						//Rendering the stars that are moving
+						for (int s = 0; s < starsFalling; s++)
+						{
+							stars[s]->move(player.getStarCollider(), g_StarSoundEffect, player.score);
+							stars[s]->render(g_Renderer, g_StarsTexture);
+						}
+
+						//Render the meteor that is moving
+						for (int m = 0; m < 1; m++)
+						{
+							meteors[m]->move(player.getMeteorCollider(), g_MeteorSoundEffect, player.hearts);
+							meteors[m]->render(g_Renderer, g_MeteorsTexture);
+						}
 
 
-					//Render the player
-					player.render(g_Renderer, g_PlayerTexture);
+						//Render the player
+						player.render(g_Renderer, g_PlayerTexture);
 
-					//If the player lost all hearts the game is over
-					if (player.hearts < 0)
-					{
-						gameOver = true;
+						//If the player lost all hearts the game is over
+						if (player.hearts < 0)
+						{
+							gameOver = true;
+						}
+						else
+						{
+							//Render heart texture
+							g_HeartTextures[player.hearts].render(g_Renderer, SCREEN_WIDTH - 200, 20);
+
+							//Manage the stars and meteors
+							starCounter += 0.015;
+							meteorCounter += 0.001;
+
+							//A new star is ready to appear, set counter back to 0. Also add another star to the vector
+							if (starCounter >= 1)
+							{
+								starsFalling += 1;
+								starCounter = 0;
+
+								stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomStarSpeed(rng)));
+
+								//The size of the vector will never be greater than 20 to avoid an overflow
+								if (stars.size() % 21 == 0)
+								{
+									//Erase the stars no longer on the screen
+									stars.erase(stars.begin() + 0, stars.begin() + 6);
+									starsFalling = 6;
+								}
+
+							}
+
+							//A new meteor is ready to appear, set counter back to 0
+							if (meteorCounter >= 1)
+							{
+								meteorCounter = 0;
+
+								//If the meteor that was moving on screen is no longer on screen, a new meteor can be created and that one can be removed
+								if (meteors[0]->getPosY() > SCREEN_HEIGHT)
+								{
+									//Erase the meteors no longer on the screen
+									meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
+									meteors.erase(meteors.begin(), meteors.begin() + 1);
+
+								}
+
+							}
+						}
 					}
 					else
 					{
-						//Render heart texture
-						g_HeartTextures[player.hearts].render(g_Renderer, SCREEN_WIDTH - 200, 20);
+						gameOverText.str("Game Over");
 
-						//Manage the stars and meteors
-						starCounter += 0.015;
-						meteorCounter += 0.001;
-
-						//A new star is ready to appear, set counter back to 0. Also add another star to the vector
-						if (starCounter >= 1)
+						if (!g_GameOverTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, gameOverText.str().c_str()))
 						{
-							starsFalling += 1;
-							starCounter = 0;
-
-							stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomStarSpeed(rng)));
-
-							//The size of the vector will never be greater than 20 to avoid an overflow
-							if (stars.size() % 21 == 0)
-							{
-								//Erase the stars no longer on the screen
-								stars.erase(stars.begin() + 0, stars.begin() + 6);
-								starsFalling = 6;
-							}
-
+							printf("\nUnable to load game over text texture!\n");
 						}
 
-						//A new meteor is ready to appear, set counter back to 0
-						if (meteorCounter >= 1)
-						{
-							meteorCounter = 0;
-
-							//If the meteor that was moving on screen is no longer on screen, a new meteor can be created and that one can be removed
-							if (meteors[0]->getPosY() > SCREEN_HEIGHT)
-							{
-								//Erase the meteors no longer on the screen
-								meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
-								meteors.erase(meteors.begin(), meteors.begin() + 1);
-
-							}
-
-						}
+						//Render game over texture
+						g_GameOverTexture.render(g_Renderer, 580, SCREEN_HEIGHT / 3);
 					}
-				}
 
-				//Load score texture
-				playerScoreText.str("");
-				playerScoreText << player.score;
+					//Load score texture
+					playerScoreText.str("");
+					playerScoreText << player.score;
 
-				if (!g_ScoreTextTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, playerScoreText.str().c_str()))
-				{
-					printf("\nUnable to load score text texture!\n");
-				}
-
-				//Render score texture
-				g_ScoreTextTexture.render(g_Renderer, 25, 20);
-
-				if (gameOver)
-				{
-					gameOverText.str("Game Over");
-
-					if (!g_GameOverTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, gameOverText.str().c_str()))
+					if (!g_ScoreTextTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, playerScoreText.str().c_str()))
 					{
-						printf("\nUnable to load game over text texture!\n");
+						printf("\nUnable to load score text texture!\n");
 					}
 
-					//Render game over texture
-					g_GameOverTexture.render(g_Renderer, 580 , SCREEN_HEIGHT / 3);
+					//Render score texture
+					g_ScoreTextTexture.render(g_Renderer, 25, 20);
+
+					//Update screen
+					SDL_RenderPresent(g_Renderer);
+
 				}
-
-				//Update screen
-				SDL_RenderPresent(g_Renderer);
-
 			}
 		}
 	}
