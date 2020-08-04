@@ -23,7 +23,7 @@ Stars::Stars(float x, float y, float speed)
 
 void Stars::move(Circle &playerCollider, Mix_Chunk *soundEffect, int& playerScore)
 {
-	m_VelY += m_StarSpeed; //This is first because otherwise the stars will instantly move - will use properly for a starting button of the game
+	m_VelY += m_StarSpeed; 
 	m_PosY += m_VelY;
 
 	shiftColliders();

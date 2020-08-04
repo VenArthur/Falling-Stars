@@ -140,6 +140,7 @@ int main(int argc, char* args[])
 					stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomStarSpeed(rng)));
 				}
 
+
 				//Max amount of stars that are currently falling 
 				int starsFalling = 1;
 				//When to add the next star
