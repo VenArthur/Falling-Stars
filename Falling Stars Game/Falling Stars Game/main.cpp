@@ -30,6 +30,7 @@ SDL_Renderer* g_Renderer = NULL;
 
 //Textures
 Texture g_BackgroundTexture;
+Texture g_PlayButton;
 Texture g_StarsTexture;
 Texture g_MeteorsTexture;
 Texture g_PlayerTexture; //This is the current player texture
@@ -117,6 +118,9 @@ int main(int argc, char* args[])
 				//Event handler
 				SDL_Event evnt;
 
+				//Play button position
+				int playButtonX = (SCREEN_WIDTH/3) + 75, playButtonY = SCREEN_HEIGHT/2;
+
 				//Create the player
 				Player player;
 
@@ -161,16 +165,34 @@ int main(int argc, char* args[])
 
 					while (SDL_PollEvent(&evnt) != 0)
 					{
+						//The player closed the window
 						if (evnt.type == SDL_QUIT)
 						{
 							quit = true;
 							starting = false;
 						}
 
-						/*For play button, 
-						for starting if playing = false set it to true
-						for restarting if playing = true and gameOver = true, quit = true
-						*/
+						//Was the play button clicked
+						if (evnt.type == SDL_MOUSEBUTTONDOWN)
+						{
+							//Get mouse position
+							int mouseX, mouseY;
+							SDL_GetMouseState(&mouseX, &mouseY);
+
+							//In range of the play button
+							if ((mouseX >= playButtonX && mouseX <= playButtonX + g_PlayButton.getWidth()) &&
+								(mouseY >= playButtonY && mouseY <= playButtonY + g_PlayButton.getHeight()))
+							{
+								if (playing == false)
+								{
+									playing = true;
+								}
+								else if (playing == true && gameOver == true)
+								{
+									quit = true;
+								}
+							}
+						}
 
 						player.handleEvent(evnt, g_PlayerTexture, g_PlayerStandingLeft, g_PlayerStandingRight, g_PlayerRunningLeft, g_PlayerRunningRight);
 					}
@@ -182,101 +204,112 @@ int main(int argc, char* args[])
 					//Render background
 					g_BackgroundTexture.render(g_Renderer, 0, 0);
 
-					//if playing here
-					if (!gameOver)
+					//The game is being played
+					if (playing)
 					{
-
-						//Rendering the stars that are moving
-						for (int s = 0; s < starsFalling; s++)
+						if (!gameOver)
 						{
-							stars[s]->move(player.getStarCollider(), g_StarSoundEffect, player.score);
-							stars[s]->render(g_Renderer, g_StarsTexture);
-						}
 
-						//Render the meteor that is moving
-						for (int m = 0; m < 1; m++)
-						{
-							meteors[m]->move(player.getMeteorCollider(), g_MeteorSoundEffect, player.hearts);
-							meteors[m]->render(g_Renderer, g_MeteorsTexture);
-						}
+							//Rendering the stars that are moving
+							for (int s = 0; s < starsFalling; s++)
+							{
+								stars[s]->move(player.getStarCollider(), g_StarSoundEffect, player.score);
+								stars[s]->render(g_Renderer, g_StarsTexture);
+							}
+
+							//Render the meteor that is moving
+							for (int m = 0; m < 1; m++)
+							{
+								meteors[m]->move(player.getMeteorCollider(), g_MeteorSoundEffect, player.hearts);
+								meteors[m]->render(g_Renderer, g_MeteorsTexture);
+							}
 
 
-						//Render the player
-						player.render(g_Renderer, g_PlayerTexture);
+							//Render the player
+							player.render(g_Renderer, g_PlayerTexture);
 
-						//If the player lost all hearts the game is over
-						if (player.hearts < 0)
-						{
-							gameOver = true;
+							//If the player lost all hearts the game is over
+							if (player.hearts < 0)
+							{
+								gameOver = true;
+							}
+							else
+							{
+								//Render heart texture
+								g_HeartTextures[player.hearts].render(g_Renderer, SCREEN_WIDTH - 200, 20);
+
+								//Manage the stars and meteors
+								starCounter += 0.015;
+								meteorCounter += 0.001;
+
+								//A new star is ready to appear, set counter back to 0. Also add another star to the vector
+								if (starCounter >= 1)
+								{
+									starsFalling += 1;
+									starCounter = 0;
+
+									stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomStarSpeed(rng)));
+
+									//The size of the vector will never be greater than 20 to avoid an overflow
+									if (stars.size() % 21 == 0)
+									{
+										//Erase the stars no longer on the screen
+										stars.erase(stars.begin() + 0, stars.begin() + 6);
+										starsFalling = 6;
+									}
+
+								}
+
+								//A new meteor is ready to appear, set counter back to 0
+								if (meteorCounter >= 1)
+								{
+									meteorCounter = 0;
+
+									//If the meteor that was moving on screen is no longer on screen, a new meteor can be created and that one can be removed
+									if (meteors[0]->getPosY() > SCREEN_HEIGHT)
+									{
+										//Erase the meteors no longer on the screen
+										meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
+										meteors.erase(meteors.begin(), meteors.begin() + 1);
+
+									}
+
+								}
+							}
 						}
 						else
 						{
-							//Render heart texture
-							g_HeartTextures[player.hearts].render(g_Renderer, SCREEN_WIDTH - 200, 20);
+							gameOverText.str("Game Over");
 
-							//Manage the stars and meteors
-							starCounter += 0.015;
-							meteorCounter += 0.001;
-
-							//A new star is ready to appear, set counter back to 0. Also add another star to the vector
-							if (starCounter >= 1)
+							if (!g_GameOverTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, gameOverText.str().c_str()))
 							{
-								starsFalling += 1;
-								starCounter = 0;
-
-								stars.push_back(new Stars(randomPosX(rng), -50, 1.0 / randomStarSpeed(rng)));
-
-								//The size of the vector will never be greater than 20 to avoid an overflow
-								if (stars.size() % 21 == 0)
-								{
-									//Erase the stars no longer on the screen
-									stars.erase(stars.begin() + 0, stars.begin() + 6);
-									starsFalling = 6;
-								}
-
+								printf("\nUnable to load game over text texture!\n");
 							}
 
-							//A new meteor is ready to appear, set counter back to 0
-							if (meteorCounter >= 1)
-							{
-								meteorCounter = 0;
+							//Render game over texture
+							g_GameOverTexture.render(g_Renderer, 580, SCREEN_HEIGHT / 3);
 
-								//If the meteor that was moving on screen is no longer on screen, a new meteor can be created and that one can be removed
-								if (meteors[0]->getPosY() > SCREEN_HEIGHT)
-								{
-									//Erase the meteors no longer on the screen
-									meteors.push_back(new Meteors(GetMeteorStartX(), -200, 1.0 / randomMeteorSpeed(rng)));
-									meteors.erase(meteors.begin(), meteors.begin() + 1);
-
-								}
-
-							}
+							//Render the play button
+							g_PlayButton.render(g_Renderer, playButtonX, playButtonY);
 						}
+
+						//Load score texture
+						playerScoreText.str("");
+						playerScoreText << player.score;
+
+						if (!g_ScoreTextTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, playerScoreText.str().c_str()))
+						{
+							printf("\nUnable to load score text texture!\n");
+						}
+
+						//Render score texture
+						g_ScoreTextTexture.render(g_Renderer, 25, 20);
 					}
 					else
 					{
-						gameOverText.str("Game Over");
-
-						if (!g_GameOverTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, gameOverText.str().c_str()))
-						{
-							printf("\nUnable to load game over text texture!\n");
-						}
-
-						//Render game over texture
-						g_GameOverTexture.render(g_Renderer, 580, SCREEN_HEIGHT / 3);
+						//If the game is not being played yet render the play button
+						g_PlayButton.render(g_Renderer, playButtonX, playButtonY);
 					}
-
-					//Load score texture
-					playerScoreText.str("");
-					playerScoreText << player.score;
-
-					if (!g_ScoreTextTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, playerScoreText.str().c_str()))
-					{
-						printf("\nUnable to load score text texture!\n");
-					}
-
-					//Render score texture
-					g_ScoreTextTexture.render(g_Renderer, 25, 20);
 
 					//Update screen
 					SDL_RenderPresent(g_Renderer);
@@ -402,6 +435,13 @@ bool loadMedia()
 		loadMediaSuccess = false;
 	}
 
+	//Load play button
+	if (!g_PlayButton.loadFromFile(g_Renderer, "PlayButton.png"))
+	{
+		printf("\nFailed to load play button texture image! \n");
+		loadMediaSuccess = false;
+	}
+
 	//Load star texture
 	if (!g_StarsTexture.loadFromFile(g_Renderer, "Stars.png"))
 	{
@@ -503,6 +543,7 @@ void close()
 {
 	//Free textures
 	g_BackgroundTexture.free();
+	g_PlayButton.free();
 	g_StarsTexture.free();
 	g_MeteorsTexture.free();
 	g_PlayerTexture.free();
