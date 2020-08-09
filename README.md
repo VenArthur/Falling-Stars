@@ -9,7 +9,7 @@ The stars are falling from the sky! It's up to you to catch and save them
 4. Create Stars and Meteors (Asteroids) ✔
 5. Create Score System ✔
 6. Create Health System ✔
-7. Create Menu
+7. Create Menu ✔
 8. Leaderboard?
 
 
