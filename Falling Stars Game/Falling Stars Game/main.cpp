@@ -46,6 +46,7 @@ Texture g_HeartTextures[4];
 TTF_Font* g_Font = NULL;
 
 //Sound Effects
+Mix_Music* g_BackgroundMusic = NULL;
 Mix_Chunk* g_StarSoundEffect = NULL;
 Mix_Chunk* g_MeteorSoundEffect = NULL;
 
@@ -159,6 +160,9 @@ int main(int argc, char* args[])
 				//Starting texture
 				g_PlayerTexture = g_PlayerStandingLeft;
 
+				//Play Background music
+				Mix_PlayMusic(g_BackgroundMusic, -1);
+
 
 				//Game window loop
 				while (!quit)
@@ -204,6 +208,7 @@ int main(int argc, char* args[])
 
 					//Render background
 					g_BackgroundTexture.render(g_Renderer, 0, 0);
+
 
 					//The game is being played
 					if (playing)
@@ -521,6 +526,14 @@ bool loadMedia()
 		loadMediaSuccess = false;
 	}
 
+	//Load background music
+	g_BackgroundMusic = Mix_LoadMUS("BackgroundMusic.mp3");
+	if (g_BackgroundMusic == NULL)
+	{
+		printf("\nFailed to load background music! SDL_mixer Error: %s\n", Mix_GetError());
+		loadMediaSuccess = false;
+	}
+
 	//Load star sound effect
 	g_StarSoundEffect = Mix_LoadWAV("StarSoundEffect.wav");
 	if (g_StarSoundEffect == NULL)
@@ -561,6 +574,7 @@ void close()
 	g_Font = NULL;
 
 	//Free Sound Effects
+	Mix_FreeMusic(g_BackgroundMusic);
 	Mix_FreeChunk(g_StarSoundEffect);
 	Mix_FreeChunk(g_MeteorSoundEffect);
 

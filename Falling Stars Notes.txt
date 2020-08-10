@@ -1,3 +1,2 @@
 Falling Stars Notes:
-Need a start button with starting flag
-Need a restarting function or flag
+1/Fps
