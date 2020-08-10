@@ -297,6 +297,9 @@ int main(int argc, char* args[])
 
 							//Render the play button
 							g_PlayButton.render(g_Renderer, playButtonX, playButtonY);
+
+							//Stop the background music
+							Mix_HaltMusic();
 						}
 
 						//Load score texture
