@@ -1,5 +1,6 @@
 #include <cmath>
 #include <ctime>
+#include <fstream>
 #include <iostream>
 #include <random>
 #include <sstream>
@@ -30,6 +31,8 @@ SDL_Renderer* g_Renderer = NULL;
 
 //Textures
 Texture g_BackgroundTexture;
+Texture g_EnterNameTexture;
+Texture g_InputTextTexture;
 Texture g_PlayButton;
 Texture g_StarsTexture;
 Texture g_MeteorsTexture;
@@ -41,6 +44,7 @@ Texture g_PlayerRunningRight;
 Texture g_ScoreTextTexture;
 Texture g_GameOverTexture;
 Texture g_HeartTextures[4];
+Texture g_TopScoresTexture[10];
 
 //Font
 TTF_Font* g_Font = NULL;
@@ -81,6 +85,9 @@ SDL_Surface* loadSurface(std::string path);
 //Load media
 bool loadMedia();
 
+//Calculate top scores
+std::vector<std::string> getTopScores(std::ifstream &readScoreFile, std::ofstream &writeScoreFile, std::string playerName, int playerScore);
+
 //Destroy window and close SDL
 void close();
 
@@ -116,6 +123,8 @@ int main(int argc, char* args[])
 				//Game over flag (flag used to determine what needs to be rendered)
 				bool gameOver = false;
 
+				bool renderGetNameText = true;
+
 				//Event handler
 				SDL_Event evnt;
 
@@ -125,11 +134,17 @@ int main(int argc, char* args[])
 				//Create the player
 				Player player;
 
+				//Text in memory for getting the player's name message
+				std::stringstream enterNameText;
+
 				//Text in memory for player score
 				std::stringstream playerScoreText;
 
 				//Text in memory for game over message
 				std::stringstream gameOverText;
+
+				//Text in memory for top player scores
+				std::stringstream topScoreText;
 
 				//Color for player score
 				SDL_Color textColor{ 255, 255, 255, 255 };
@@ -177,8 +192,37 @@ int main(int argc, char* args[])
 							starting = false;
 						}
 
+						//Certain key events for getting the player name
+						if (evnt.type == SDL_KEYDOWN && renderGetNameText == true)
+						{
+							//Handle backspace for text input
+							if (evnt.key.keysym.sym == SDLK_BACKSPACE && player.name.length() > 0)
+							{
+								//chop off last character
+								player.name.pop_back();
+								renderGetNameText = true;
+							}
+
+							if (evnt.key.keysym.sym == SDLK_RETURN)
+							{
+								renderGetNameText = false;
+							}
+						}
+
+						//Input for player name
+						if (evnt.type == SDL_TEXTINPUT)
+						{
+							//Append character
+							if (player.name.length() < 40)
+							{
+								player.name += evnt.text.text;
+								renderGetNameText = true;
+							}
+							
+						}
+
 						//Was the play button clicked
-						if (evnt.type == SDL_MOUSEBUTTONDOWN)
+						if (evnt.type == SDL_MOUSEBUTTONDOWN && renderGetNameText != true)
 						{
 							//Get mouse position
 							int mouseX, mouseY;
@@ -292,8 +336,36 @@ int main(int argc, char* args[])
 								printf("\nUnable to load game over text texture!\n");
 							}
 
+
+							//Get the leaderboard file and calculate if the player got a top score
+							std::ifstream readScoreFile("leaderboard.txt");
+							std::ofstream writeScoreFile("leaderboard.txt");
+							std::vector<std::string> topScores = getTopScores(readScoreFile, writeScoreFile, player.name, player.score);
+
+							//Place all scores into a text texture
+							for(int t = 0; t < topScores.size(); t++)
+							{
+
+								std::cout << topScores[t] << std::endl;
+	
+								/*topScoreText.str("");
+								topScoreText << topScores[t];
+								if (!g_TopScoresTexture[t].loadFromRenderedText(g_Renderer, textColor, g_Font, topScoreText.str().c_str()))
+								{
+									printf("\nUnable to load top scores text texture!\n");
+								}*/
+							}
+							
+							//Render top scores
+							/*for(int tst = 0; tst < sizeof(g_TopScoresTexture); tst++)
+							{
+								g_TopScoresTexture[tst].render(g_Renderer, SCREEN_WIDTH / 2, ((SCREEN_HEIGHT - 100) - (tst * 50)));
+							}*/
+							
+								
+
 							//Render game over texture
-							g_GameOverTexture.render(g_Renderer, 580, SCREEN_HEIGHT / 3);
+							g_GameOverTexture.render(g_Renderer, 580, SCREEN_HEIGHT - 50);
 
 							//Render the play button
 							g_PlayButton.render(g_Renderer, playButtonX, playButtonY);
@@ -316,8 +388,44 @@ int main(int argc, char* args[])
 					}
 					else
 					{
-						//If the game is not being played yet render the play button
-						g_PlayButton.render(g_Renderer, playButtonX, playButtonY);
+						if (renderGetNameText)
+						{
+							//Render a get name texture and text input here
+							SDL_StartTextInput();
+						
+							enterNameText.str("Enter your name. Please press enter once done typing");
+
+							if (!g_EnterNameTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, enterNameText.str().c_str()))
+							{
+								printf("\nUnable to load enter name text texture!\n");
+							}
+
+							g_EnterNameTexture.render(g_Renderer, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 3);
+
+							//Text is not empty
+							if (player.name != "")
+							{
+								//Render new text
+								g_InputTextTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, player.name.c_str());
+							}
+							//Text is empty
+							else
+							{
+								//Render space texture
+								g_InputTextTexture.loadFromRenderedText(g_Renderer, textColor, g_Font, " ");
+
+							}
+
+							g_InputTextTexture.render(g_Renderer, SCREEN_WIDTH / 4, (SCREEN_HEIGHT / 3) + 100);
+
+						}
+						else
+						{
+							SDL_StopTextInput();
+							//If the game is not being played yet and the player has entered their name render the play button
+							g_PlayButton.render(g_Renderer, playButtonX, playButtonY);
+						}
+						
 					}
 
 					//Update screen
@@ -556,10 +664,100 @@ bool loadMedia()
 }
 
 
+std::vector<std::string> getTopScores(std::ifstream& readScoreFile, std::ofstream& writeScoreFile, std::string playerName, int playerScore)
+{
+	/*
+	Read the whole file into a vector<string>.
+	Insert your text.
+	Write the whole file back to disk.
+	*/
+
+	//A vector of all contents in the leaderboard file
+	std::vector<std::string> scores;
+
+	//each line of the leaderboard file to be placed into the scores vector
+	std::string line;
+
+	//One of the top scores in the file
+	std::string existingScore;
+
+	//Full line that needs to be inserted if the player's score is a top score
+	std::string insertedScore;
+
+	//existing score to be turned into an int to compare the player's score
+	int n;
+
+	//if the player's score is not a top score, there is no need to write to file
+	bool didGetATopScore = false;
+
+	//Get contents of the file and put it in the scores vector
+	if (readScoreFile.is_open())
+	{
+		while (std::getline(readScoreFile, line))
+		{
+			scores.push_back(line);
+		}
+		readScoreFile.close();
+	}
+
+	//Search through the vector for the top scores and then compare the score to the player's score
+	for (int i = 0; i < scores.size(); i++)
+	{
+		for (int j = 0; j < scores[i].size(); j++)
+		{
+			if (scores[i][j] == '-')
+			{
+				break;
+			}
+			else
+			{
+				existingScore.push_back(scores[i][j]);
+			}
+		}
+
+		//The score from the leaderboard is now an int
+		std::istringstream(existingScore) >> n;
+
+		if (playerScore > n)
+		{
+			//The full line that needs to be inserted
+			insertedScore = std::to_string(playerScore) + "-" + playerName;
+
+			scores.insert(scores.begin()+i, insertedScore);
+			scores.pop_back();
+
+			didGetATopScore = true;
+			
+			break;
+		}
+	}
+
+
+	//If the player did get a top score write to the file
+	if (didGetATopScore)
+	{
+		if (writeScoreFile.is_open())
+		{
+			for (int w = 0; w < scores.size(); w++)
+			{
+				writeScoreFile << scores[w] << std::endl;
+			}
+
+			writeScoreFile.close();
+		}
+	}
+
+
+	return scores;
+}
+
+
 void close()
 {
 	//Free textures
 	g_BackgroundTexture.free();
+	g_EnterNameTexture.free();
+	g_InputTextTexture.free();
 	g_PlayButton.free();
 	g_StarsTexture.free();
 	g_MeteorsTexture.free();
@@ -571,6 +769,7 @@ void close()
 	g_ScoreTextTexture.free();
 	g_GameOverTexture.free();
 	g_HeartTextures[4].free();
+	g_TopScoresTexture[10].free();
 
 	//Close the font
 	TTF_CloseFont(g_Font);

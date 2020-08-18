@@ -1,2 +1,27 @@
 Falling Stars Notes:
-1/Fps
+For leaderboard:
+will be top 10
+first value is score, name of player
+if the current score is > a score already on the list, 
+	pop_back and insert the new score and get name of player
+
+will need to render score list, below game over and above the play button
+create a texture to pop up and request the player's name if their score is top 10
+
+
+score and name is text to screen
+
+when reading the line of a file it is in string.
+since the score will be first, loop the string chars until it reaches a - (dash)
+push those chars into another string and make it an int to compare to the players score
+if the player's score is larger than what was read, then get the player's name
+	the string line that was being read, if it now equals 
+	players score to string + "-" + players name
+	will it write to the file where the line was read???
+	
+else 
+the file line gets pushed into a string array for rendered text
+go to the next line
+
+
+create a prompt for the player's name before the game starts

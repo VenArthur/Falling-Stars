@@ -22,6 +22,9 @@ Player::Player()
 	//Initialize hearts
 	hearts = 3;
 
+	//Initialize name
+	name = "";
+
 	shiftColliders();
 }
 
@@ -70,6 +73,7 @@ void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standi
 			{
 				playerTexture = runningRight;
 			}
+
 
 			m_PosX += m_PlayerSpeed;
 			shiftColliders();

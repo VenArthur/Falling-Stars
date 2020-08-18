@@ -35,6 +35,9 @@ public:
 	//Player Health
 	int hearts;
 
+	//Player Name
+	std::string name;
+
 private:
 	//X offset
 	float m_PosX;
