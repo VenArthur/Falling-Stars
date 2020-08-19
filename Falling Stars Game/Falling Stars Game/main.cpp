@@ -73,7 +73,7 @@ int GetMeteorStartX(int const a = 0, int const b = SCREEN_WIDTH)
 }
 
 //Random Meteor Speed
-std::uniform_int_distribution<std::mt19937::result_type> randomMeteorSpeed(20, 50);
+std::uniform_int_distribution<std::mt19937::result_type> randomMeteorSpeed(2, 5); //20, 50
 
 
 //Initialize SDL and create the window
@@ -690,12 +690,17 @@ std::vector<std::string> getTopScores(std::ifstream& readScoreFile, std::ofstrea
 	//if the player's score is not a top score, there is no need to write to file
 	bool didGetATopScore = false;
 
+	//readScoreFile.open("leaderboard.txt");
+
 	//Get contents of the file and put it in the scores vector
 	if (readScoreFile.is_open())
 	{
+
+		//my problem 
 		while (std::getline(readScoreFile, line))
 		{
-			scores.push_back(line);
+			std::cout << line << "\n";
+			//scores.push_back(line);
 		}
 		readScoreFile.close();
 	}
