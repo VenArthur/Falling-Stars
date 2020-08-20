@@ -348,19 +348,19 @@ int main(int argc, char* args[])
 
 								std::vector<std::string> topScores = getTopScores(readScoreFile, writeScoreFile, player.name, player.score);
 
-								////Place all scores into a text texture
-								//for (int t = 0; t < topScores.size(); t++)
-								//{
+								//Place all scores into a text texture
+								for (int t = 0; t < topScores.size(); t++)
+								{
 
-								//	std::cout << topScores[t] << std::endl;
+									std::cout << topScores[t] << std::endl;
 
-								//	/*topScoreText.str("");
-								//	topScoreText << topScores[t];
-								//	if (!g_TopScoresTexture[t].loadFromRenderedText(g_Renderer, textColor, g_Font, topScoreText.str().c_str()))
-								//	{
-								//		printf("\nUnable to load top scores text texture!\n");
-								//	}*/
-								//}
+									/*topScoreText.str("");
+									topScoreText << topScores[t];
+									if (!g_TopScoresTexture[t].loadFromRenderedText(g_Renderer, textColor, g_Font, topScoreText.str().c_str()))
+									{
+										printf("\nUnable to load top scores text texture!\n");
+									}*/
+								}
 
 								didGetTopScores = true;
 							}
@@ -707,59 +707,61 @@ std::vector<std::string> getTopScores(std::ifstream& readScoreFile, std::ofstrea
 	{
 		while (std::getline(readScoreFile, line))
 		{
-			std::cout << line << "\n";
-			//scores.push_back(line);
+			//std::cout << line << "\n";
+			scores.push_back(line);
 		}
 		readScoreFile.close();
 	}
 
-	////Search through the vector for the top scores and then compare the score to the player's score
-	//for (int i = 0; i < scores.size(); i++)
-	//{
-	//	for (int j = 0; j < scores[i].size(); j++)
-	//	{
-	//		if (scores[i][j] == '-')
-	//		{
-	//			break;
-	//		}
-	//		else
-	//		{
-	//			existingScore.push_back(scores[i][j]);
-	//		}
-	//	}
+	//Search through the vector for the top scores and then compare the score to the player's score
+	//this need fixing 
+	for (int i = 0; i < scores.size(); i++)
+	{
+		for (int j = 0; j < scores[i].size(); j++)
+		{
+			if (scores[i][j] == '-')
+			{
+				break;
+			}
+			else
+			{
+				existingScore.push_back(scores[i][j]);
+			}
+		}
 
-	//	//The score from the leaderboard is now an int
-	//	std::istringstream(existingScore) >> n;
+		//The score from the leaderboard is now an int
+		std::istringstream(existingScore) >> n;
 
-	//	if (playerScore > n)
-	//	{
-	//		//The full line that needs to be inserted
-	//		insertedScore = std::to_string(playerScore) + "-" + playerName;
+		if (playerScore > n)
+		{
+			//The full line that needs to be inserted
+			insertedScore = std::to_string(playerScore) + "-" + playerName;
 
-	//		scores.insert(scores.begin()+i, insertedScore);
-	//		scores.pop_back();
+			scores.insert(scores.begin()+i, insertedScore);
+			scores.pop_back();
 
-	//		didGetATopScore = true;
-	//		
-	//		break;
-	//	}
-	//}
+			didGetATopScore = true;
+			
+			break;
+		}
+	}
 
 
-	////If the player did get a top score write to the file
-	//if (didGetATopScore)
-	//{
-		//open write file here 
-	//	if (writeScoreFile.is_open())
-	//	{
-	//		for (int w = 0; w < scores.size(); w++)
-	//		{
-	//			writeScoreFile << scores[w] << std::endl;
-	//		}
+	//If the player did get a top score write to the file
+	if (didGetATopScore)
+	{
+		writeScoreFile.open("leaderboard.txt");
 
-	//		writeScoreFile.close();
-	//	}
-	//}
+		if (writeScoreFile.is_open())
+		{
+			for (int w = 0; w < scores.size(); w++)
+			{
+				writeScoreFile << scores[w] << std::endl;
+			}
+
+			writeScoreFile.close();
+		}
+	}
 
 
 	return scores;
