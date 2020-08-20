@@ -713,8 +713,7 @@ std::vector<std::string> getTopScores(std::ifstream& readScoreFile, std::ofstrea
 		readScoreFile.close();
 	}
 
-	//Search through the vector for the top scores and then compare the score to the player's score
-	//this need fixing 
+	//Search through the vector for the top scores and then compare the score to the player's score 
 	for (int i = 0; i < scores.size(); i++)
 	{
 		for (int j = 0; j < scores[i].size(); j++)
@@ -732,6 +731,7 @@ std::vector<std::string> getTopScores(std::ifstream& readScoreFile, std::ofstrea
 		//The score from the leaderboard is now an int
 		std::istringstream(existingScore) >> n;
 
+
 		if (playerScore > n)
 		{
 			//The full line that needs to be inserted
@@ -743,6 +743,12 @@ std::vector<std::string> getTopScores(std::ifstream& readScoreFile, std::ofstrea
 			didGetATopScore = true;
 			
 			break;
+		}
+		else
+		{
+			//the string for the top score being compared is cleared and ready to get the next top score
+			existingScore.clear();
+			n = 0;
 		}
 	}
 
