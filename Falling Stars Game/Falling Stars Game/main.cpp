@@ -217,7 +217,7 @@ int main(int argc, char* args[])
 						if (evnt.type == SDL_TEXTINPUT)
 						{
 							//Append character
-							if (player.name.length() < 40)
+							if (player.name.length() < 26)
 							{
 								player.name += evnt.text.text;
 								renderGetNameText = true;
@@ -351,30 +351,35 @@ int main(int argc, char* args[])
 								//Place all scores into a text texture
 								for (int t = 0; t < topScores.size(); t++)
 								{
-
-									std::cout << topScores[t] << std::endl;
-
-									/*topScoreText.str("");
+									topScoreText.str("");
 									topScoreText << topScores[t];
+
 									if (!g_TopScoresTexture[t].loadFromRenderedText(g_Renderer, textColor, g_Font, topScoreText.str().c_str()))
 									{
 										printf("\nUnable to load top scores text texture!\n");
-									}*/
+									}
+
+									//Need to clear stringstream for next texture
+									topScoreText.clear();
 								}
 
 								didGetTopScores = true;
 							}
-							
+
+
 							//Render top scores
-							/*for(int tst = 0; tst < sizeof(g_TopScoresTexture); tst++)
+							for(int tst = 0; tst < 10; tst++)
 							{
-								g_TopScoresTexture[tst].render(g_Renderer, SCREEN_WIDTH / 2, ((SCREEN_HEIGHT - 100) - (tst * 50)));
-							}*/
+								g_TopScoresTexture[tst].render(g_Renderer, 150, ((100) + (tst * 50)));
+							}
 							
 								
 
 							//Render game over texture
-							g_GameOverTexture.render(g_Renderer, 580, SCREEN_HEIGHT - 50);
+							g_GameOverTexture.render(g_Renderer, 580, 50);
+
+							playButtonX = SCREEN_WIDTH/2;
+							playButtonY = SCREEN_HEIGHT - 200;
 
 							//Render the play button
 							g_PlayButton.render(g_Renderer, playButtonX, playButtonY);
