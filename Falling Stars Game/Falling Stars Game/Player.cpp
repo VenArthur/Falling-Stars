@@ -59,6 +59,13 @@ void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standi
 			}
 
 			m_PosX -= m_PlayerSpeed;
+
+			//Don't go off screen on the left side
+			if (m_PosX < 0)
+			{
+				m_PosX += m_PlayerSpeed;
+			}
+
 			shiftColliders();
 		}
 		else if (evnt.key.keysym.sym == SDLK_d || evnt.key.keysym.sym == SDLK_RIGHT)
@@ -76,6 +83,14 @@ void Player::handleEvent(SDL_Event evnt, Texture& playerTexture, Texture &standi
 
 
 			m_PosX += m_PlayerSpeed;
+
+			//Don't go off screen on the right side 
+			//(1280 is the screenwidth, yes I could have passed it in but I'm lazy), the minus 5 is because it was off by 5 to the end of the screen
+			if (m_PosX > (1280 + m_StarCollider.r) - (PLAYER_WIDTH - 5))
+			{
+				m_PosX -= m_PlayerSpeed;
+			}
+
 			shiftColliders();
 		}
 	}

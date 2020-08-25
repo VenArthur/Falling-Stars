@@ -73,7 +73,7 @@ int GetMeteorStartX(int const a = 0, int const b = SCREEN_WIDTH)
 }
 
 //Random Meteor Speed
-std::uniform_int_distribution<std::mt19937::result_type> randomMeteorSpeed(2, 5); //20, 50
+std::uniform_int_distribution<std::mt19937::result_type> randomMeteorSpeed(10, 50);
 
 
 //Initialize SDL and create the window
@@ -371,7 +371,7 @@ int main(int argc, char* args[])
 							//Render top scores
 							for(int tst = 0; tst < 10; tst++)
 							{
-								g_TopScoresTexture[tst].render(g_Renderer, 450, ((150) + (tst * 30)));
+								g_TopScoresTexture[tst].render(g_Renderer, 525, ((150) + (tst * 30)));
 							}
 							
 								
@@ -379,7 +379,7 @@ int main(int argc, char* args[])
 							//Render game over texture
 							g_GameOverTexture.render(g_Renderer, 580, 50);
 
-							playButtonX = (SCREEN_WIDTH/2) - 150;
+							playButtonX = (SCREEN_WIDTH/2) - 125;
 							playButtonY = SCREEN_HEIGHT - 200;
 
 							//Render the play button
@@ -724,12 +724,14 @@ std::vector<std::string> getTopScores(std::ifstream& readScoreFile, std::ofstrea
 	{
 		for (int j = 0; j < scores[i].size(); j++)
 		{
+			//The end of the score (the number) is over at the first space 
 			if (scores[i][j] == ' ')
 			{
 				break;
 			}
 			else
 			{
+				//Push back each digit 
 				existingScore.push_back(scores[i][j]);
 			}
 		}
