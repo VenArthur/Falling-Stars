@@ -217,7 +217,7 @@ int main(int argc, char* args[])
 						if (evnt.type == SDL_TEXTINPUT)
 						{
 							//Append character
-							if (player.name.length() < 26)
+							if (player.name.length() < 15)
 							{
 								player.name += evnt.text.text;
 								renderGetNameText = true;
@@ -340,6 +340,7 @@ int main(int argc, char* args[])
 								printf("\nUnable to load game over text texture!\n");
 							}
 
+							//Get the top scores once, there's no need to loop it
 							if (!didGetTopScores)
 							{
 								//Get the leaderboard file and calculate if the player got a top score
@@ -370,7 +371,7 @@ int main(int argc, char* args[])
 							//Render top scores
 							for(int tst = 0; tst < 10; tst++)
 							{
-								g_TopScoresTexture[tst].render(g_Renderer, 150, ((100) + (tst * 50)));
+								g_TopScoresTexture[tst].render(g_Renderer, 450, ((150) + (tst * 30)));
 							}
 							
 								
@@ -378,7 +379,7 @@ int main(int argc, char* args[])
 							//Render game over texture
 							g_GameOverTexture.render(g_Renderer, 580, 50);
 
-							playButtonX = SCREEN_WIDTH/2;
+							playButtonX = (SCREEN_WIDTH/2) - 150;
 							playButtonY = SCREEN_HEIGHT - 200;
 
 							//Render the play button
@@ -647,7 +648,7 @@ bool loadMedia()
 	g_Font = TTF_OpenFont("Orbitron-SemiBold.ttf", 22);
 	if (g_Font == NULL)
 	{
-		printf("\nFailed to load the score font (g_Font)! SDL_ttf Error: %s\n", TTF_GetError());
+		printf("\nFailed to load the global font (g_Font)! SDL_ttf Error: %s\n", TTF_GetError());
 		loadMediaSuccess = false;
 	}
 
@@ -723,7 +724,7 @@ std::vector<std::string> getTopScores(std::ifstream& readScoreFile, std::ofstrea
 	{
 		for (int j = 0; j < scores[i].size(); j++)
 		{
-			if (scores[i][j] == '-')
+			if (scores[i][j] == ' ')
 			{
 				break;
 			}
@@ -740,7 +741,7 @@ std::vector<std::string> getTopScores(std::ifstream& readScoreFile, std::ofstrea
 		if (playerScore > n)
 		{
 			//The full line that needs to be inserted
-			insertedScore = std::to_string(playerScore) + "-" + playerName;
+			insertedScore = std::to_string(playerScore) + " - " + playerName;
 
 			scores.insert(scores.begin()+i, insertedScore);
 			scores.pop_back();
