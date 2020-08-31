@@ -2,17 +2,6 @@
 The stars are falling from the sky! It's up to you to catch and save them
 
 
-## To-Do List
-1. Create Window ✔
-2. Create Background ✔
-3. Create Player ✔
-4. Create Stars and Meteors (Asteroids) ✔
-5. Create Score System ✔
-6. Create Health System ✔
-7. Create Menu ✔
-8. Leaderboard?
-
-
 ### Artist Credit
 
 The art for the asteroids is by <a href= "https://www.pixilart.com/art/game-meteor-b59e616e93c5aac">Anonymous on Pixilart.com</a>
