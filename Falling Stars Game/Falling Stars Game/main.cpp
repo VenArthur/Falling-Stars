@@ -73,7 +73,7 @@ int GetMeteorStartX(int const a = 0, int const b = SCREEN_WIDTH)
 }
 
 //Random Meteor Speed
-std::uniform_int_distribution<std::mt19937::result_type> randomMeteorSpeed(10, 50);
+std::uniform_int_distribution<std::mt19937::result_type> randomMeteorSpeed(5, 30);
 
 
 //Initialize SDL and create the window
