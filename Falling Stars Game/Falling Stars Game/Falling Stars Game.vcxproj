@@ -74,9 +74,9 @@
     <LibraryPath>D:\Falling-Stars\SDL2-2.0.9\lib\x86;D:\Falling-Stars\SDL2_ttf-2.0.15\lib\x86;D:\Falling-Stars\SDL2_mixer-2.0.4\lib\x86;D:\Falling-Stars\SDL2_image-2.0.4\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ExecutablePath>\Falling-Stars;$(ExecutablePath)</ExecutablePath>
-    <OutDir>\Falling-Stars</OutDir>
-    <SourcePath>$(VC_SourcePath);$(SourcePath)</SourcePath>
+    <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath)</ExecutablePath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <SourcePath>$(VC_SourcePath);</SourcePath>
     <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
