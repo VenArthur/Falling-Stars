@@ -475,7 +475,7 @@ bool init()
 	else
 	{
 		//Create the window
-		g_Window = SDL_CreateWindow("Learning SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		g_Window = SDL_CreateWindow("Falling Stars", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 		//If the window couldn't be created
 		if (g_Window == NULL)
