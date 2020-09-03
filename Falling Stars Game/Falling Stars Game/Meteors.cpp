@@ -16,6 +16,8 @@ Meteors::Meteors(float x, float y, float speed)
 
 	m_Collider.r = METEOR_WIDTH / 2;
 
+	
+
 	//Initialize the velocity
 	m_VelX = 0;
 	m_VelY = 0;
@@ -72,6 +74,7 @@ void Meteors::render(SDL_Renderer* renderer, Texture& meteorTexture)
 	if (!m_DoNOTRender)
 	{
 		meteorTexture.render(renderer, m_PosX - m_Collider.r, m_PosY - m_Collider.r, NULL, m_degrees);
+
 	}
 }
 

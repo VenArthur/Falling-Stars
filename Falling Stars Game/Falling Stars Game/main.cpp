@@ -16,6 +16,7 @@
 #include "Stars.h"
 #include "Meteors.h"
 
+
 //Window dimensions 
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
@@ -73,7 +74,7 @@ int GetMeteorStartX(int const a = 0, int const b = SCREEN_WIDTH)
 }
 
 //Random Meteor Speed
-std::uniform_int_distribution<std::mt19937::result_type> randomMeteorSpeed(5, 30);
+std::uniform_int_distribution<std::mt19937::result_type> randomMeteorSpeed(20, 50);
 
 
 //Initialize SDL and create the window
@@ -207,6 +208,7 @@ int main(int argc, char* args[])
 								renderGetNameText = true;
 							}
 
+							//The name has been entered
 							if (evnt.key.keysym.sym == SDLK_RETURN)
 							{
 								renderGetNameText = false;
@@ -561,91 +563,91 @@ bool loadMedia()
 	bool loadMediaSuccess = true;
 
 	//Load background texture
-	if (!g_BackgroundTexture.loadFromFile(g_Renderer, "Space Background.png"))
+	if (!g_BackgroundTexture.loadFromFile(g_Renderer, "Assets\\Space Background.png"))
 	{
 		printf("\nFailed to load background texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load play button
-	if (!g_PlayButton.loadFromFile(g_Renderer, "PlayButton.png"))
+	if (!g_PlayButton.loadFromFile(g_Renderer, "Assets\\PlayButton.png"))
 	{
 		printf("\nFailed to load play button texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load star texture
-	if (!g_StarsTexture.loadFromFile(g_Renderer, "Stars.png"))
+	if (!g_StarsTexture.loadFromFile(g_Renderer, "Assets\\Stars.png"))
 	{
 		printf("\nFailed to load star texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load meteor texture
-	if (!g_MeteorsTexture.loadFromFile(g_Renderer, "meteor.png"))
+	if (!g_MeteorsTexture.loadFromFile(g_Renderer, "Assets\\meteor.png"))
 	{
 		printf("\nFailed to load meteor texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load player standing left texture
-	if (!g_PlayerStandingLeft.loadFromFile(g_Renderer, "PlayerStandingLeft.png"))
+	if (!g_PlayerStandingLeft.loadFromFile(g_Renderer, "Assets\\PlayerStandingLeft.png"))
 	{
 		printf("\nFailed to load PlayerStandingLeft texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load player standing right texture
-	if (!g_PlayerStandingRight.loadFromFile(g_Renderer, "PlayerStandingRight.png"))
+	if (!g_PlayerStandingRight.loadFromFile(g_Renderer, "Assets\\PlayerStandingRight.png"))
 	{
 		printf("\nFailed to load PlayerStandingRight texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load player running left 1 texture
-	if (!g_PlayerRunningLeft.loadFromFile(g_Renderer, "PlayerRunningLeft1.png"))
+	if (!g_PlayerRunningLeft.loadFromFile(g_Renderer, "Assets\\PlayerRunningLeft1.png"))
 	{
 		printf("\nFailed to load PlayerRunningLeft texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load player running right 1 texture
-	if (!g_PlayerRunningRight.loadFromFile(g_Renderer, "PlayerRunningRight1.png"))
+	if (!g_PlayerRunningRight.loadFromFile(g_Renderer, "Assets\\PlayerRunningRight1.png"))
 	{
 		printf("\nFailed to load PlayerRunningRight texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load 4 hearts left texture
-	if (!g_HeartTextures[3].loadFromFile(g_Renderer, "4Hearts.png"))
+	if (!g_HeartTextures[3].loadFromFile(g_Renderer, "Assets\\4Hearts.png"))
 	{
 		printf("\nFailed to load 4Hearts texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load 3 hearts left texture
-	if (!g_HeartTextures[2].loadFromFile(g_Renderer, "3Hearts.png"))
+	if (!g_HeartTextures[2].loadFromFile(g_Renderer, "Assets\\3Hearts.png"))
 	{
 		printf("\nFailed to load 3Hearts texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load 2 hearts left texture
-	if (!g_HeartTextures[1].loadFromFile(g_Renderer, "2Hearts.png"))
+	if (!g_HeartTextures[1].loadFromFile(g_Renderer, "Assets\\2Hearts.png"))
 	{
 		printf("\nFailed to load 2Hearts texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Load 1 heart left texture
-	if (!g_HeartTextures[0].loadFromFile(g_Renderer, "1Heart.png"))
+	if (!g_HeartTextures[0].loadFromFile(g_Renderer, "Assets\\1Heart.png"))
 	{
 		printf("\nFailed to load 1Heart texture image! \n");
 		loadMediaSuccess = false;
 	}
 
 	//Open the font
-	g_Font = TTF_OpenFont("Orbitron-SemiBold.ttf", 22);
+	g_Font = TTF_OpenFont("Assets\\Orbitron-SemiBold.ttf", 22);
 	if (g_Font == NULL)
 	{
 		printf("\nFailed to load the global font (g_Font)! SDL_ttf Error: %s\n", TTF_GetError());
@@ -653,7 +655,7 @@ bool loadMedia()
 	}
 
 	//Load background music
-	g_BackgroundMusic = Mix_LoadMUS("BackgroundMusic.mp3");
+	g_BackgroundMusic = Mix_LoadMUS("Assets\\BackgroundMusic.mp3");
 	if (g_BackgroundMusic == NULL)
 	{
 		printf("\nFailed to load background music! SDL_mixer Error: %s\n", Mix_GetError());
@@ -661,7 +663,7 @@ bool loadMedia()
 	}
 
 	//Load star sound effect
-	g_StarSoundEffect = Mix_LoadWAV("StarSoundEffect.wav");
+	g_StarSoundEffect = Mix_LoadWAV("Assets\\StarSoundEffect.wav");
 	if (g_StarSoundEffect == NULL)
 	{
 		printf("\nFailed to load star sound effect! SDL_mixer Error: %s\n", Mix_GetError());
@@ -669,7 +671,7 @@ bool loadMedia()
 	}
 
 	//Load meteor sound effect
-	g_MeteorSoundEffect = Mix_LoadWAV("MeteorSoundEffect.wav");
+	g_MeteorSoundEffect = Mix_LoadWAV("Assets\\MeteorSoundEffect.wav");
 	if (g_MeteorSoundEffect == NULL)
 	{
 		printf("\nFailed to load meteor sound effect! SDL_mixer Error: %s\n", Mix_GetError());
@@ -706,7 +708,7 @@ std::vector<std::string> getTopScores(std::ifstream& readScoreFile, std::ofstrea
 	bool didGetATopScore = false;
 
 	//Open the file to read
-	readScoreFile.open("leaderboard.txt");
+	readScoreFile.open("Assets\\leaderboard.txt");
 
 	//Get contents of the file and put it in the scores vector
 	if (readScoreFile.is_open())
@@ -764,7 +766,7 @@ std::vector<std::string> getTopScores(std::ifstream& readScoreFile, std::ofstrea
 	//If the player did get a top score write to the file
 	if (didGetATopScore)
 	{
-		writeScoreFile.open("leaderboard.txt");
+		writeScoreFile.open("Assets\\leaderboard.txt");
 
 		if (writeScoreFile.is_open())
 		{

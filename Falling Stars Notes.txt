@@ -1,2 +1,15 @@
 Falling Stars Notes:
-Was used for development notes
+
+I couldn't work out how to link the exe file to the falling-stars file. 
+At this point, the falling stars game project folder is just the development stuff.
+If I need to fix any bugs or update anything, I can run the game in release and then
+drag the files over from the release folder into Falling-Stars and overwrite the old files.
+This is not the ideal way I would want to set up the files, but I'll learn eventually how to 
+fix it.
+
+
+
+This was my first game development project. I'm very pleased with how it came out, 
+especially with my poor art skills xD
+I want to give a tremendous thanks to lazyfoo for the SDL tutorials, which most of my code 
+is based off of. Now it's time for the next project! :)
